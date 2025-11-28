@@ -57,22 +57,3 @@ scrollToTopBtn.addEventListener('click', () => {
     behavior: 'smooth'
   });
 });
-
-// Validação do formulário de contato
-const contactForm = document.querySelector('form');
-if (contactForm) {
-  contactForm.addEventListener('submit', (e) => {
-    e.preventDefault();
-
-    const name = document.querySelector('input[type="text"]').value;
-    const email = document.querySelector('input[type="email"]').value;
-    const message = document.querySelector('textarea').value;
-
-    if (name && email && message) {
-      alert('Obrigado pelo seu contato! Entraremos em contato em breve.');
-      contactForm.reset();
-    } else {
-      alert('Por favor, preencha todos os campos.');
-    }
-  });
-}
