@@ -57,3 +57,54 @@ scrollToTopBtn.addEventListener('click', () => {
     behavior: 'smooth'
   });
 });
+
+// Função para inicializar o carrossel
+function initCarousel() {
+  let currentSlide = 0;
+  const slides = document.querySelectorAll('.carousel-slide');
+  const totalSlides = slides.length;
+
+  if (slides.length === 0) {
+    console.warn("Nenhum slide encontrado para o carrossel.");
+    return;
+  }
+
+  function showSlide(index) {
+    slides.forEach((slide, i) => {
+      slide.classList.remove('active');
+    });
+    slides[index].classList.add('active');
+  }
+
+  function nextSlide() {
+    currentSlide = (currentSlide + 1) % totalSlides;
+    showSlide(currentSlide);
+  }
+
+  function prevSlide() {
+    currentSlide = (currentSlide - 1 + totalSlides) % totalSlides;
+    showSlide(currentSlide);
+  }
+
+  // Auto-play a cada 5 segundos
+  setInterval(nextSlide, 5000);
+
+  // Botões de navegação
+  const nextBtn = document.querySelector('.promo-carousel .next');
+  const prevBtn = document.querySelector('.promo-carousel .prev');
+
+  if (nextBtn) {
+    nextBtn.addEventListener('click', nextSlide);
+  }
+
+  if (prevBtn) {
+    prevBtn.addEventListener('click', prevSlide);
+  }
+}
+
+// Executa quando o DOM estiver carregado
+if (document.readyState === 'loading') {
+  document.addEventListener('DOMContentLoaded', initCarousel);
+} else {
+  initCarousel();
+}
