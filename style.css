@@ -222,10 +222,80 @@ nav a:hover {
 
 /* Rodapé */
 footer {
-  background-color: #5d4037;
+  background-color: #5d4037; /* Marrom terroso */
   color: white;
+  padding: 30px 5%;
   text-align: center;
-  padding: 20px;
+}
+
+.footer-content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 20px;
+}
+
+.footer-content p {
+  margin: 0;
+  font-size: 0.9rem;
+  opacity: 0.8;
+}
+
+.social-icons {
+  display: flex;
+  gap: 20px;
+  justify-content: center;
+}
+
+.social-icons a {
+  display: inline-block;
+  width: 40px;
+  height: 40px;
+  transition: transform 0.3s ease;
+  border-radius: 50%;
+  background-color: rgba(255, 255, 255, 0.1);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.social-icons a:hover {
+  transform: scale(1.2);
+  background-color: rgba(255, 255, 255, 0.2);
+}
+
+.social-icons svg {
+  width: 20px;
+  height: 20px;
+}
+
+/* Responsividade */
+@media (max-width: 768px) {
+  .social-icons {
+    gap: 15px;
+  }
+
+  .social-icons a {
+    width: 35px;
+    height: 35px;
+  }
+
+  .social-icons svg {
+    width: 18px;
+    height: 18px;
+  }
+}
+
+/* Responsividade */
+@media (max-width: 768px) {
+  .social-icons {
+    gap: 15px;
+  }
+
+  .social-icons a {
+    width: 35px;
+    height: 35px;
+  }
 }
 
 /* Botão do WhatsApp (flutuante) */
