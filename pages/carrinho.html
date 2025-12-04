@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Carrinho - Bronto Burger</title>
+  <link rel="stylesheet" href="../style.css">
+  <style>
+    .cart-container {
+      max-width: 800px;
+      margin: 40px auto;
+      padding: 20px;
+      background-color: white;
+      border-radius: 10px;
+      box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+    }
+
+    .cart-header {
+      display: flex;
+      justify-content: space-between;
+      font-weight: bold;
+      padding-bottom: 10px;
+      border-bottom: 1px solid #eee;
+    }
+
+    .cart-item {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 15px 0;
+      border-bottom: 1px solid #eee;
+    }
+
+    .cart-item-info {
+      display: flex;
+      align-items: center;
+      gap: 15px;
+    }
+
+    .cart-item img {
+      width: 60px;
+      height: 60px;
+      object-fit: cover;
+      border-radius: 8px;
+    }
+
+    .cart-item-details h3 {
+      margin: 0;
+      font-size: 1.1rem;
+      color: #ff6b35;
+    }
+
+    .cart-item-details p {
+      margin: 5px 0 0;
+      font-size: 0.9rem;
+      color: #666;
+    }
+
+    .cart-item-price {
+      font-weight: bold;
+      color: #4a6b4a;
+    }
+
+    .cart-total {
+      text-align: right;
+      font-size: 1.3rem;
+      font-weight: bold;
+      margin: 20px 0;
+      color: #5d4037;
+    }
+
+    .checkout-btn {
+      display: block;
+      width: 100%;
+      padding: 15px;
+      background-color: #25D366; /* Verde do WhatsApp */
+      color: white;
+      text-align: center;
+      text-decoration: none;
+      border-radius: 8px;
+      font-size: 1.2rem;
+      font-weight: bold;
+      transition: background-color 0.3s;
+    }
+
+    .checkout-btn:hover {
+      background-color: #1da851;
+    }
+
+    .empty-cart {
+      text-align: center;
+      padding: 40px 0;
+      color: #666;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Cabeçalho -->
+  <header>
+    <div class="logo">
+      <img src="../assets/images/logo-bronto-burger.png" alt="Bronto Burger">
+    </div>
+    <button class="menu-toggle">☰</button>
+    <nav>
+      <ul>
+        <li><a href="../index.html#home">Home</a></li>
+        <li><a href="../index.html#cardapio">Cardápio</a></li>
+        <li><a href="../index.html#sobre">Sobre Nós</a></li>
+        <li><a href="../index.html#contato">Contato</a></li>
+      </ul>
+    </nav>
+    <div class="cart-icon">
+      <a href="carrinho.html" id="cart-link">
+        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="#fff">
+          <path d="M7 18c-1.1 0-1.99-.9-1.99-2H3c-1.1 0-2-.9-2-2V8c0-1.1.9-2 2-2h2C5.1 6 6 6.9 6 8h12c1.1 0 2 .9 2 2v1h2c1.1 0 2 .9 2 2v1c0 1.1-.9 2-2 2h-2c0 1.1-.9 2-2 2H7zm10-4H7v4h10v-4z"/>
+        </svg>
+        <span id="cart-count">0</span>
+      </a>
+    </div>
+  </header>
+
+  <!-- Conteúdo da Página -->
+  <main>
+    <div class="cart-container">
+      <h2>Seu Carrinho</h2>
+
+      <div id="cart-items">
+        <!-- Os itens serão inseridos aqui pelo JavaScript -->
+      </div>
+
+      <div id="cart-empty" class="empty-cart" style="display: none;">
+        Seu carrinho está vazio.
+      </div>
+
+      <div class="cart-total" id="cart-total">
+        Total: R$ 0,00
+      </div>
+
+      <a href="#" id="checkout-whatsapp" class="checkout-btn" target="_blank">
+        Finalizar Pedido no WhatsApp
+      </a>
+    </div>
+  </main>
+
+  <script src="../script.js"></script>
+  <script>
+    // Função para carregar o carrinho na página de carrinho
+    document.addEventListener('DOMContentLoaded', function() {
+      loadCart();
+
+      const cartItemsContainer = document.getElementById('cart-items');
+      const cartEmptyContainer = document.getElementById('cart-empty');
+      const cartTotalContainer = document.getElementById('cart-total');
+      const checkoutBtn = document.getElementById('checkout-whatsapp');
+
+      if (cart.length === 0) {
+        cartItemsContainer.style.display = 'none';
+        cartEmptyContainer.style.display = 'block';
+        cartTotalContainer.textContent = 'Total: R$ 0,00';
+        checkoutBtn.href = '#';
+        checkoutBtn.style.pointerEvents = 'none';
+        checkoutBtn.style.opacity = '0.5';
+      } else {
+        cartItemsContainer.innerHTML = '';
+        let total = 0;
+
+        cart.forEach(item => {
+          total += item.price * item.quantity;
+          const itemElement = document.createElement('div');
+          itemElement.className = 'cart-item';
+          itemElement.innerHTML = `
+            <div class="cart-item-info">
+              <img src="${item.image}" alt="${item.name}">
+              <div class="cart-item-details">
+                <h3>${item.name}</h3>
+                <p>${item.quantity}x</p>
+              </div>
+            </div>
+            <div class="cart-item-price">R$ ${(item.price * item.quantity).toFixed(2)}</div>
+          `;
+          cartItemsContainer.appendChild(itemElement);
+        });
+
+        cartTotalContainer.textContent = `Total: R$ ${total.toFixed(2)}`;
+        checkoutBtn.href = `https://wa.me/5511999999999?text=Olá,%20gostaria%20de%20finalizar%20meu%20pedido:%0A${cart.map(item => `- ${item.name} (${item.quantity}x) R$${(item.price * item.quantity).toFixed(2)}`).join('%0A')}%0ATotal:%20R$${total.toFixed(2)}`;
+      }
+    });
+  </script>
+
+</body>
+</html>

@@ -108,3 +108,83 @@ if (document.readyState === 'loading') {
 } else {
   initCarousel();
 }
+
+// Carrinho de Compras
+let cart = [];
+
+// Função para salvar o carrinho no localStorage
+function saveCart() {
+  localStorage.setItem('bronto-cart', JSON.stringify(cart));
+}
+
+// Função para carregar o carrinho do localStorage
+function loadCart() {
+  const savedCart = localStorage.getItem('bronto-cart');
+  if (savedCart) {
+    cart = JSON.parse(savedCart);
+  }
+  updateCartCount();
+}
+
+// Função para atualizar a contagem no ícone
+function updateCartCount() {
+  const countElement = document.getElementById('cart-count');
+  countElement.textContent = cart.length;
+}
+
+// Função para adicionar item ao carrinho
+function addToCart(name, price, image) {
+  const existingItem = cart.find(item => item.name === name);
+
+  if (existingItem) {
+    existingItem.quantity += 1;
+  } else {
+    cart.push({
+      name,
+      price,
+      image,
+      quantity: 1
+    });
+  }
+
+  saveCart();
+  updateCartCount();
+  alert(`${name} adicionado ao carrinho!`);
+}
+
+// Função para remover item do carrinho
+function removeFromCart(name) {
+  const index = cart.findIndex(item => item.name === name);
+
+  if (index !== -1) {
+    if (cart[index].quantity > 1) {
+      cart[index].quantity -= 1;
+    } else {
+      cart.splice(index, 1);
+    }
+
+    saveCart();
+    updateCartCount();
+  }
+}
+
+// Carrega o carrinho quando a página é aberta
+document.addEventListener('DOMContentLoaded', loadCart);
+
+// Adiciona evento aos botões "Adicionar ao Carrinho"
+document.querySelectorAll('.add-to-cart').forEach(button => {
+  button.addEventListener('click', function() {
+    const name = this.getAttribute('data-name');
+    const price = parseFloat(this.getAttribute('data-price'));
+    const image = this.getAttribute('data-image');
+    addToCart(name, price, image);
+  });
+});
+
+// Adiciona evento aos botões de remoção (se existirem)
+document.querySelectorAll('.remove-from-cart').forEach(button => {
+  button.addEventListener('click', function() {
+    const name = this.getAttribute('data-name');
+    removeFromCart(name);
+  });
+});
