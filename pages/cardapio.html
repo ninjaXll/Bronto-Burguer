@@ -3,28 +3,28 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Bronto Burger - Hamburgueria Pré-Histórica</title>
-  <link rel="stylesheet" href="style.css">
+  <title>Cardápio - Bronto Burger</title>
+  <link rel="stylesheet" href="../style.css">
 </head>
 <body>
 
   <!-- Cabeçalho -->
   <header>
     <div class="logo">
-      <img src="assets/images/logo-bronto-burger.png" alt="Bronto Burger">
+      <img src="../assets/images/logo-bronto-burger.png" alt="Bronto Burger">
     </div>
     <button class="menu-toggle">☰</button>
     <nav>
       <ul>
-        <li><a href="#home">Home</a></li>
-        <li><a href="pages/cardapio.html">Cardápio</a></li>
+        <li><a href="../index.html">Home</a></li>
+        <li><a href="cardapio.html">Cardápio</a></li>
         <li><a href="#sobre">Sobre Nós</a></li>
         <li><a href="#contato">Contato</a></li>
       </ul>
     </nav>
     <!-- Carrinho de compras -->
      <div class="cart-icon">
-      <a href="pages/carrinho.html" id="cart-link">
+      <a href="./carrinho.html" id="cart-link">
         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="#fff">
           <path d="M7 18c-1.104 0-1.99.896-1.99 2s.886 2 1.99 2 2-.896 2-2-.896-2-2-2zm10 0c-1.104 0-1.99.896-1.99 2s.886 2 1.99 2 2-.896 2-2-.896-2-2-2zm-12.83-3l1.528-7h13.602l1.528 7h-16.658zm16.658-9h-15.418l-.342-1.5h-3.9v-2h4.5l1.5 6h14.418l1.5 6h2l-2-8z"/>
         </svg>
@@ -33,26 +33,83 @@
      </div>
   </header>
 
-  <!-- Seção Home -->
-  <section id="home" class="promo-carousel">
-    <div class="carousel-slide active">
-   <img src="assets/images/Promo1.png" alt="Promoção 1">
+  <!-- Seção Cardápio -->
+  <section class="menu">
+    <h2>Nosso Cardápio</h2>
+    <div class="menu-items">
+      <div class="menu-item">
+        <img src="../assets/images/hamb-1.jpg" alt="Bronto Clássico" class="menu-img">
+        <h3>Bronto Clássico</h3>
+        <p>Hambúrguer artesanal com queijo cheddar, alface, tomate e molho especial.</p>
+        <span class="price">R$ 29,90</span>
+      <div class="quantity-controls">
+        <button class="remove-from-cart" data-name="Bronto Clássico">-</button>
+        <span class="quantity">0</span>
+        <button class="add-to-cart" data-name="Bronto Clássico" data-price="29.90" data-image="../assets/images/hamb-1.jpg">+</button>
+      </div>
     </div>
 
-   <div class="carousel-slide">
-    <img src="assets/images/Promo2.png" alt="Promoção 2">
-   </div>
-
- <div class="carousel-slide">
-  <img src="assets/images/Promo3.png" alt="Promoção 3">
+  <div class="menu-item">
+    <img src="../assets/images/hamb-2.jpg" alt="T-Rex Supremo" class="menu-img">
+    <h3>T-Rex Supremo</h3>
+    <p>Dois hambúrgueres, bacon crocante, cebola caramelizada e queijo derretido.</p>
+    <span class="price">R$ 42,90</span>
+    <div class="quantity-controls">
+      <button class="remove-from-cart" data-name="T-Rex Supremo">-</button>
+      <span class="quantity">0</span>
+      <button class="add-to-cart" data-name="T-Rex Supremo" data-price="42.90" data-image="../assets/images/hamb-2.jpg">+</button>
+    </div>
   </div>
 
-   <!-- Botões de navegação (opcional) -->
-   <button class="carousel-btn prev">❮</button>
-   <button class="carousel-btn next">❯</button>
+  <div class="menu-item">
+    <img src="../assets/images/hamb-3.jpg" alt="Velociraptor Vegano" class="menu-img">
+    <h3>Velociraptor Vegano</h3>
+    <p>Patty de grão-de-bico, molho de ervas, rúcula e picles de abacaxi.</p>
+    <span class="price">R$ 34,90</span>
+    <div class="quantity-controls">
+      <button class="remove-from-cart" data-name="Velociraptor Vegano">-</button>
+      <span class="quantity">0</span>
+      <button class="add-to-cart" data-name="Velociraptor Vegano" data-price="34.90" data-image="../assets/images/hamb-3.jpg">+</button>
+    </div>
+  </div>
+
+  <div class="menu-item">
+    <img src="../assets/images/fries.jpg" alt="Batata Frita Pré-Histórica" class="menu-img">
+    <h3>Batata Frita Pré-Histórica</h3>
+    <p>Crocantes e temperadas com sal marinho e pimenta do jurássico.</p>
+    <span class="price">R$ 14,90</span>
+    <div class="quantity-controls">
+      <button class="remove-from-cart" data-name="Batata Frita Pré-Histórica">-</button>
+      <span class="quantity">0</span>
+      <button class="add-to-cart" data-name="Batata Frita Pré-Histórica" data-price="14.90" data-image="../assets/images/fries.jpg">+</button>
+    </div>
+  </div>
+
+  <div class="menu-item">
+    <img src="../assets/images/soda.jpg" alt="Refrigerante Lava" class="menu-img">
+    <h3>Refrigerante Lava</h3>
+    <p>Sabor laranja picante com toque de canela – refresca e aquece!</p>
+    <span class="price">R$ 8,90</span>
+    <div class="quantity-controls">
+      <button class="remove-from-cart" data-name="Refrigerante Lava">-</button>
+      <span class="quantity">0</span>
+      <button class="add-to-cart" data-name="Refrigerante Lava" data-price="8.90" data-image="../assets/images/soda.jpg">+</button>
+    </div>
+  </div>
+
+  <div class="menu-item">
+    <img src="../assets/images/dessert.jpg" alt="Ovo de Dinossauro" class="menu-img">
+    <h3>Ovo de Dinossauro</h3>
+    <p>Sobremesa surpresa: brownie quente com sorvete de baunilha e calda de chocolate.</p>
+    <span class="price">R$ 19,90</span>
+    <div class="quantity-controls">
+      <button class="remove-from-cart" data-name="Ovo de Dinossauro">-</button>
+      <span class="quantity">0</span>
+      <button class="add-to-cart" data-name="Ovo de Dinossauro" data-price="19.90" data-image="../assets/images/dessert.jpg">+</button>
+    </div>
+  </div>
+    </div>
   </section>
-
-
 
   <!-- Seção Sobre Nós -->
   <section id="sobre" class="about">
@@ -110,7 +167,7 @@
   </a>
 
   <!-- ⭐ ADICIONE ESSA LINHA AQUI ⭐ -->
-  <script src="script.js"></script>
+  <script src="../script.js"></script>
 
 </body>
 </html>

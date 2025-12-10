@@ -177,13 +177,13 @@
                 <p>${item.quantity}x</p>
               </div>
             </div>
-            <div class="cart-item-price">R$ ${(item.price * item.quantity).toFixed(2)}</div>
+            <div class="cart-item-price">R$ ${(item.price * item.quantity).toFixed(2).replace('.', ',')}</div>
           `;
           cartItemsContainer.appendChild(itemElement);
         });
 
-        cartTotalContainer.textContent = `Total: R$ ${total.toFixed(2)}`;
-        checkoutBtn.href = `https://wa.me/5511999999999?text=Olá,%20gostaria%20de%20finalizar%20meu%20pedido:%0A${cart.map(item => `- ${item.name} (${item.quantity}x) R$${(item.price * item.quantity).toFixed(2)}`).join('%0A')}%0ATotal:%20R$${total.toFixed(2)}`;
+        cartTotalContainer.textContent = `Total: R$ ${total.toFixed(2).replace('.', ',')}`;
+        checkoutBtn.href = `https://wa.me/5511999999999?text=Olá,%20gostaria%20de%20finalizar%20meu%20pedido:%0A${cart.map(item => `- ${item.name} (${item.quantity}x) R$${(item.price * item.quantity).toFixed(2).replace('.', ',')}`).join('%0A')}%0ATotal:%20R$${total.toFixed(2).replace('.', ',')}`;
       }
     });
   </script>
