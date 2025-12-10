@@ -123,27 +123,36 @@ function loadCart() {
   if (savedCart) {
     cart = JSON.parse(savedCart);
   }
-  updateCartCount();
-  updateAllQuantitiesDisplay();
+  updateCartCount(); // Atualiza o contador do ícone do carrinho
+  updateAllQuantitiesDisplay(); // Atualiza todos os contadores dos botões
 }
 
-// Função para atualizar a contagem no ícone
+// Função para atualizar a contagem no ícone do carrinho
 function updateCartCount() {
-  const cartCounterElements = document.querySelectorAll('.cart-counter');
+  const cartCounterElements = document.querySelectorAll('.cart-counter'); // Atualiza todos os elementos com essa classe
   cartCounterElements.forEach(element => {
     element.textContent = cart.reduce((total, item) => total + item.quantity, 0);
   });
+
+  // Atualiza também o contador no cabeçalho
+  const cartCountElement = document.getElementById('cart-count');
+  if (cartCountElement) {
+    cartCountElement.textContent = cart.reduce((total, item) => total + item.quantity, 0);
+  }
 }
 
 // Função para atualizar a exibição de quantidade em todos os itens do cardápio
 function updateAllQuantitiesDisplay() {
   document.querySelectorAll('.quantity').forEach(qtyElement => {
-    const cartCountElement = document.getElementById('cart-count');
-    if (cartCountElement) {
-      cartCountElement.textContent = cart.reduce((total, item) => total + item.quantity, 0);
+    const itemName = qtyElement.closest('.menu-item')?.querySelector('.add-to-cart')?.getAttribute('data-name');
+    if (itemName) {
+      const itemInCart = cart.find(item => item.name === itemName);
+      qtyElement.textContent = itemInCart ? itemInCart.quantity : '0';
     }
   });
 }
+
+
 // Função para adicionar item ao carrinho
 function addToCart(name, price, image) {
   const existingItem = cart.find(item => item.name === name);
@@ -160,8 +169,8 @@ function addToCart(name, price, image) {
   }
 
   saveCart();
-  updateCartCount();
-  updateQuantitiesDisplay(name);
+  updateCartCount(); // Atualiza o contador do ícone
+  updateAllQuantitiesDisplay(); // Atualiza todos os contadores dos botões
 
   // Feedback visual ao adicionar item
   const buttons = document.querySelectorAll(`.add-to-cart[data-name="${name}"]`);
@@ -187,8 +196,8 @@ function removeFromCart(name) {
     }
 
     saveCart();
-    updateCartCount();
-    updateQuantitiesDisplay(name);
+    updateCartCount(); // Atualiza o contador do ícone
+    updateAllQuantitiesDisplay(); // Atualiza todos os contadores dos botões
     
     // Feedback visual ao remover item
     const removeButtons = document.querySelectorAll(`.remove-from-cart[data-name="${name}"]`);
@@ -202,17 +211,6 @@ function removeFromCart(name) {
     });
   }
 
-}
-
-// Função para atualizar a exibição de quantidade para um item específico
-function updateQuantityDisplay(name) {
-  document.querySelectorAll(`.quantity`).forEach(qtyElement => {
-    const itemName = qtyElement.closest('.menu-item')?.querySelector('.add-to-cart')?.getAttribute('data-name');
-    if (itemName === name) {
-      const itemInCart = cart.find(item => item.name === name);
-      qtyElement.textContent = itemInCart ? itemInCart.quantity : '0';
-    }
-  });
 }
 
 // Carrega o carrinho quando a página é aberta
@@ -237,4 +235,3 @@ document.addEventListener('DOMContentLoaded', function() {
     });
   });
 });
-
