@@ -124,14 +124,32 @@ function loadCart() {
     cart = JSON.parse(savedCart);
   }
   updateCartCount();
+  updateAllQuantitiesDisplay();
 }
 
 // Função para atualizar a contagem no ícone
 function updateCartCount() {
   const countElement = document.getElementById('cart-count');
-  countElement.textContent = cart.length;
+  if (countElement) {
+    countElement.textContent = cart.reduce((total, item) => total + item.quantity, 0);
+  }
+
+  const cartCounterElement = document.querySelector('.cart-counter');
+  cartCounterElement.forEach(element => {
+    element.textContent = cart.reduce((total, item) => total + item.quantity, 0);
+  });
 }
 
+// Função para atualizar a exibição de quantidade em todos os itens do cardápio
+function updateAllQuantitiesDisplay() {
+  document.querySelectorAll('.quantity').forEach(qtyElement => {
+    const itemName = qtyElement.closest('.menu-item')?.querySelector('.add-to-cart')?.getAttribute('data-name');
+    if (itemName) {
+      const itemInCart = cart.find(item => item.name === itemName);
+      qtyElement.textContent = itemInCart ? itemInCart.quantity : '0';
+    }
+  });
+}
 // Função para adicionar item ao carrinho
 function addToCart(name, price, image) {
   const existingItem = cart.find(item => item.name === name);
@@ -149,7 +167,18 @@ function addToCart(name, price, image) {
 
   saveCart();
   updateCartCount();
-  alert(`${name} adicionado ao carrinho!`);
+  updateQuantitiesDisplay(name);
+
+  // Feedback visual ao adicionar item
+  const buttons = document.querySelectorAll(`.add-to-cart[data-name="${name}"]`);
+  buttons.forEach(button => {
+    button.style.transform = 'scale(1.2)';
+    button.style.backgroundColor = '#e55a2b';
+    setTimeout(() => {
+      button.style.transform = 'scale(1)';
+      button.style.backgroundColor = '';
+    }, 200);
+  });
 }
 
 // Função para remover item do carrinho
@@ -165,7 +194,31 @@ function removeFromCart(name) {
 
     saveCart();
     updateCartCount();
+    updateQuantitiesDisplay(name);
+    
+    // Feedback visual ao remover item
+    const removeButtons = document.querySelectorAll(`.remove-from-cart[data-name="${name}"]`);
+    removeButtons.forEach(button => {
+      button.style.transform = 'scale(1.2)';
+      button.style.backgroundColor = '#e55a2b';
+      setTimeout(() => {
+        button.style.transform = 'scale(1)';
+        button.style.backgroundColor = '';
+      }, 200);
+    });
   }
+
+}
+
+// Função para atualizar a exibição de quantidade para um item específico
+function updateQuantityDisplay(name) {
+  document.querySelectorAll(`.quantity`).forEach(qtyElement => {
+    const itemName = qtyElement.closest('.menu-item')?.querySelector('.add-to-cart')?.getAttribute('data-name');
+    if (itemName === name) {
+      const itemInCart = cart.find(item => item.name === name);
+      qtyElement.textContent = itemInCart ? itemInCart.quantity : '0';
+    }
+  });
 }
 
 // Carrega o carrinho quando a página é aberta
