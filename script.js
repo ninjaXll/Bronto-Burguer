@@ -129,13 +129,8 @@ function loadCart() {
 
 // Função para atualizar a contagem no ícone
 function updateCartCount() {
-  const countElement = document.getElementById('cart-count');
-  if (countElement) {
-    countElement.textContent = cart.reduce((total, item) => total + item.quantity, 0);
-  }
-
-  const cartCounterElement = document.querySelector('.cart-counter');
-  cartCounterElement.forEach(element => {
+  const cartCounterElements = document.querySelectorAll('.cart-counter');
+  cartCounterElements.forEach(element => {
     element.textContent = cart.reduce((total, item) => total + item.quantity, 0);
   });
 }
@@ -143,10 +138,9 @@ function updateCartCount() {
 // Função para atualizar a exibição de quantidade em todos os itens do cardápio
 function updateAllQuantitiesDisplay() {
   document.querySelectorAll('.quantity').forEach(qtyElement => {
-    const itemName = qtyElement.closest('.menu-item')?.querySelector('.add-to-cart')?.getAttribute('data-name');
-    if (itemName) {
-      const itemInCart = cart.find(item => item.name === itemName);
-      qtyElement.textContent = itemInCart ? itemInCart.quantity : '0';
+    const cartCountElement = document.getElementById('cart-count');
+    if (cartCountElement) {
+      cartCountElement.textContent = cart.reduce((total, item) => total + item.quantity, 0);
     }
   });
 }
@@ -222,22 +216,25 @@ function updateQuantityDisplay(name) {
 }
 
 // Carrega o carrinho quando a página é aberta
-document.addEventListener('DOMContentLoaded', loadCart);
+document.addEventListener('DOMContentLoaded', function() {
+  loadCart();
 
-// Adiciona evento aos botões "Adicionar ao Carrinho"
-document.querySelectorAll('.add-to-cart').forEach(button => {
-  button.addEventListener('click', function() {
-    const name = this.getAttribute('data-name');
-    const price = parseFloat(this.getAttribute('data-price'));
-    const image = this.getAttribute('data-image');
-    addToCart(name, price, image);
+  // Adiciona evento aos botões "Adicionar ao Carrinho"
+  document.querySelectorAll('.add-to-cart').forEach(button => {
+    button.addEventListener('click', function() {
+      const name = this.getAttribute('data-name');
+      const price = parseFloat(this.getAttribute('data-price'));
+      const image = this.getAttribute('data-image');
+      addToCart(name, price, image);
+    });
+  });
+
+  // Adiciona evento aos botões de remoção (se existirem)
+  document.querySelectorAll('.remove-from-cart').forEach(button => {
+    button.addEventListener('click', function() {
+      const name = this.getAttribute('data-name');
+      removeFromCart(name);
+    });
   });
 });
 
-// Adiciona evento aos botões de remoção (se existirem)
-document.querySelectorAll('.remove-from-cart').forEach(button => {
-  button.addEventListener('click', function() {
-    const name = this.getAttribute('data-name');
-    removeFromCart(name);
-  });
-});
