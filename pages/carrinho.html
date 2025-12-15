@@ -193,7 +193,7 @@
           cartItemsContainer.appendChild(itemElement);
         });
 
-        cartTotalContainer.textContent = `Total: R$ ${total.toFixed(2).replace('.', ',')}`;
+        cartTotalContainer.textContent = `Total: R$ ${total.toFixed().replace('.', ',')}`;
         
         //Abrir modal ao clicar no botão de checkout
         checkoutBtn.addEventListener('click',function(e){
@@ -252,6 +252,36 @@
           changeValue: document.getElementById('change-value').value
         };
 
+        if(!name){
+          alert('Por favor, insira seu nome completo.');
+          return;
+        }
+        if(!deliveryType){
+          alert('Por favor, selecione o tipo de entrega.');
+          return;
+        }
+        if(formData.deliveryType === 'entrega' && !formData.address){
+          alert('Por favor, insira o endereço de entrega.');
+          return;
+        }
+        if(!paymentMethod){
+          alert('Por favor, selecione a forma de pagamento.');
+          return;
+        }
+
+        //Recalcular total para garantir precisão
+        let currentTotal = 0;
+        cart.forEach(item => {
+          currentTotal += item.price * item.quantity;
+        });
+
+      //validação adicional para entrega
+      if(formData.deliveryType === 'emtrega' && !formData.address.trim()){
+        alert('Por favor, insira o endereço de entrega.');
+        return;
+      }
+
+
         //Preparar mensagem para o WhatsApp
         let message = `* Novo Pedido - Bronto Burger*\\n\\n`;
         message += `*Cliente:* ${formData.name}\\n\\n`;
@@ -294,7 +324,7 @@
 
         //Codificar mensagem para URL
         const encodedMessage = encodeURIComponent(message);
-        const whatsappUrl = `https://wa.me/5571991953918?text=Olá%2C%20gostaria%20de%20mais%20informações`;
+        const whatsappUrl = `https://wa.me/5571991953918?text=${encodedMessage}`;
 
         //Abrir WhatsApp com a mensagem
         window.open(whatsappUrl, '_blank');
