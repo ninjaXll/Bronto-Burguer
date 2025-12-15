@@ -60,14 +60,14 @@ scrollToTopBtn.addEventListener('click', () => {
 
 // Função para inicializar o carrossel
 function initCarousel() {
-  let currentSlide = 0;
   const slides = document.querySelectorAll('.carousel-slide');
-  const totalSlides = slides.length;
-
   if (slides.length === 0) {
     console.warn("Nenhum slide encontrado para o carrossel.");
-    return;
+    return; // Sai da função se não houver slides
   }
+
+  let currentSlide = 0;
+  const totalSlides = slides.length;
 
   function showSlide(index) {
     slides.forEach((slide, i) => {
@@ -377,7 +377,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
         //Preparar mensagem para o WhatsApp
         let message = `━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n`;
-        message += `          🍔 BRONTO BURGER\n`;
+        message += `           BRONTO BURGER\n`;
         message += `━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n`;
 
         message += `*👤 CLIENTE:* ${formData.name}\n\n`;
@@ -386,14 +386,15 @@ document.addEventListener('DOMContentLoaded', function() {
         message += `*🛒 ITENS DO PEDIDO:*\n`;
         cart.forEach(item => {
           let emoji = '🍔';
-          if(item.name.includes('Refrigerante')) emoji = '🥤';
-          if(item.name.includes('Batata')) emoji = '🍟';
-          if(item.name.includes('vegano')) emoji = '🥗';
-          if(item.name.includes('T-Rex')) emoji = '🦖';
-          message += `- ${item.name} x${item.quantity} = R$ ${(item.price * item.quantity).toFixed(2).replace('.', ',')}\\n`;
+          if(item.name.includes('Refrigerante')) emoji = '(🥤)';
+          if(item.name.includes('Batata')) emoji = '(🍟)';
+          if(item.name.includes('vegano')) emoji = '(🥗)';
+          if(item.name.includes('T-Rex')) emoji = '(🦖)';
+          if(item.name.includes('Bronto')) emoji = '(🍔)';
+          message += `• ${emoji} *${item.name}* x${item.quantity} → R$ ${(item.price * item.quantity).toFixed(2).replace('.', ',')}\n`;
         });
 
-        message += `\n*💰 Total:* R$ ${currentTotal.toFixed(2).replace('.', ',')}\n\n`; // Corrigido: usar currentTotal
+        message += `\n*Total:* R$ ${currentTotal.toFixed(2).replace('.', ',')}\n\n`; // Corrigido: usar currentTotal
 
         if(formData.deliveryType === 'entrega') {
           message += `*🚚 Tipo de Entrega:* Entrega\n`;
@@ -423,9 +424,9 @@ document.addEventListener('DOMContentLoaded', function() {
 
         message += `*💳 Forma de Pagamento:* ${paymentText}\n`;
 
-        message += `━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n`;
-        message += `      🍔 Obrigado pelo seu pedido! 🍔\n`;
-        message += `━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n`;
+        message += `━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n`;
+        message += `   🍔 Obrigado pelo seu pedido! 🍔\n`;
+        message += `━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n`;
 
         //Codificar mensagem para URL
         const encodedMessage = encodeURIComponent(message);
