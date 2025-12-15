@@ -657,3 +657,90 @@ footer {
 .btn-secondary:hover {
   background-color: #bbb;
 }
+
+ .cart-container {
+      max-width: 800px;
+      margin: 40px auto;
+      padding: 20px;
+      background-color: white;
+      border-radius: 10px;
+      box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+    }
+
+    .cart-header {
+      display: flex;
+      justify-content: space-between;
+      font-weight: bold;
+      padding-bottom: 10px;
+      border-bottom: 1px solid #eee;
+    }
+
+    .cart-item {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 15px 0;
+      border-bottom: 1px solid #eee;
+    }
+
+    .cart-item-info {
+      display: flex;
+      align-items: center;
+      gap: 15px;
+    }
+
+    .cart-item img {
+      width: 60px;
+      height: 60px;
+      object-fit: cover;
+      border-radius: 8px;
+    }
+
+    .cart-item-details h3 {
+      margin: 0;
+      font-size: 1.1rem;
+      color: #ff6b35;
+    }
+
+    .cart-item-details p {
+      margin: 5px 0 0;
+      font-size: 0.9rem;
+      color: #666;
+    }
+
+    .cart-item-price {
+      font-weight: bold;
+      color: #4a6b4a;
+    }
+
+    .cart-total {
+      text-align: right;
+      font-size: 1.3rem;
+      font-weight: bold;
+      margin: 20px 0;
+      color: #5d4037;
+    }
+
+    .checkout-btn {
+      display: block;
+      width: 100%;
+      padding: 15px;
+      background-color: #25D366; /* Verde do WhatsApp */
+      color: white;
+      text-align: center;
+      text-decoration: none;
+      border-radius: 8px;
+      font-size: 1.2rem;
+      font-weight: bold;
+      transition: background-color 0.3s;
+    }
+
+    .checkout-btn:hover {
+      background-color: #1da851;
+    }
+
+    .empty-cart {
+      text-align: center;
+      padding: 40px 0;
+      color: #666;
+    }
