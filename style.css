@@ -35,13 +35,16 @@ header {
   height: 50px;
   max-width: 200px;
   object-fit: contain;
+  border-radius: 50%;
   filter: drop-shadow(2px 2px 4px rgba(0,0,0,0.3)); /* Sombra suave */
+  padding: 5px;
 }
 
 @media (max-width: 768px) {
   .logo img {
     height: 40px;
     max-width: 150px;
+    padding: 3px;
   }
 }
 
@@ -269,34 +272,6 @@ footer {
   height: 20px;
 }
 
-/* Responsividade */
-@media (max-width: 768px) {
-  .social-icons {
-    gap: 15px;
-  }
-
-  .social-icons a {
-    width: 35px;
-    height: 35px;
-  }
-
-  .social-icons svg {
-    width: 18px;
-    height: 18px;
-  }
-}
-
-/* Responsividade */
-@media (max-width: 768px) {
-  .social-icons {
-    gap: 15px;
-  }
-
-  .social-icons a {
-    width: 35px;
-    height: 35px;
-  }
-}
 
 /* Botão do WhatsApp (flutuante) */
 #whatsapp-button {
@@ -487,7 +462,8 @@ footer {
 
 /* Carrinho de Compras */
 .cart-icon {
-  position: relative;
+  display: flex;
+  align-items: center;
 }
 
 #cart-link {
@@ -497,13 +473,32 @@ footer {
   text-decoration: none;
   font-size: 1.2rem;
   transition: color 0.3s;
+  padding: 5px 10px;
+  blackground-color: rgba(255, 255, 255, 0.1);
+  border-radius: 20px;
+  min-height: 40px;
+  justify-content: center;
 }
 
 #cart-link:hover {
   color: #ff6b35;
+  animation: pulse 1s ease-in-out infinite;
 }
 
-#cart-count {
+@keyframes pulse {
+  0% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.1);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
+#cart-count,
+.cart-counter {
   background-color: #ff6b35;
   color: white;
   border-radius: 50%;
@@ -515,6 +510,16 @@ footer {
   font-size: 0.8rem;
   margin-left: 5px;
   font-weight: bold;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+}
+
+#cart-link:hover{
+  background-color: transparent;
+}
+
+#cart-link:hover{
+  color: #ff6b35;
+  animation: pulse 1s ease-in-out infinite;
 }
 
 .quantity-controls {
@@ -744,3 +749,348 @@ footer {
       padding: 40px 0;
       color: #666;
     }
+
+    /* --- NOVO: RESPONSIVIDADE AVANÇADA --- */
+
+/* --- Breakpoint para Telas Muito Pequenas (Smartphones) --- */
+@media (max-width: 480px) {
+  header {
+    flex-direction: column;
+    gap: 10px;
+    padding: 10px;
+  }
+
+  .logo img {
+    height: 40px;
+    max-width: 120px;
+    padding: 2px;
+  }
+
+  .menu-toggle {
+    display: block;
+    font-size: 1.5rem;
+  }
+
+  nav ul {
+    display: none;
+    width: 100%;
+    flex-direction: column;
+    gap: 5px;
+    background-color: #5d4037;
+    padding: 10px;
+    margin-top: 5px;
+    border-radius: 5px;
+  }
+
+  nav ul.active {
+    display: flex;
+  }
+
+  nav a {
+    font-size: 0.9rem;
+    padding: 5px;
+  }
+
+  .cart-icon {
+    /* Ajusta o tamanho do ícone para telas pequenas */
+    padding: 0;
+  }
+
+  #cart-link {
+    padding: 3px 6px;
+    font-size: 1rem;
+  }
+
+  #cart-count,
+  .cart-counter {
+    width: 20px;
+    height: 20px;
+    font-size: 0.7rem;
+    margin-left: 3px;
+  }
+
+  .hero-content h1 {
+    font-size: 1.5rem;
+  }
+
+  .hero-content p {
+    font-size: 1rem;
+  }
+
+  .cta-button {
+    padding: 8px 15px;
+    font-size: 0.9rem;
+  }
+
+  .menu h2 {
+    font-size: 2rem;
+  }
+
+  .menu-item {
+    padding: 15px;
+  }
+
+  .menu-item img {
+    height: 150px;
+  }
+
+  .about h2 {
+    font-size: 2rem;
+  }
+
+  .contact h2 {
+    font-size: 2rem;
+  }
+
+  .contact-info {
+    padding: 15px;
+  }
+
+  .contact-info p {
+    font-size: 1rem;
+  }
+
+  footer {
+    padding: 20px 5%;
+  }
+
+  .footer-content p {
+    font-size: 0.8rem;
+  }
+
+  .social-icons a {
+    width: 30px;
+    height: 30px;
+  }
+
+  .social-icons svg {
+    width: 16px;
+    height: 16px;
+  }
+
+  #whatsapp-button {
+    bottom: 10px;
+    right: 10px;
+    padding: 10px 15px;
+    font-size: 14px;
+  }
+
+  #whatsapp-button i {
+    font-size: 20px;
+    margin-right: 5px;
+  }
+}
+
+/* --- Breakpoint para Telas Médias (Tablets) --- */
+@media (min-width: 481px) and (max-width: 768px) {
+  header {
+    flex-direction: row;
+    gap: 15px;
+    padding: 15px;
+  }
+
+  .logo img {
+    height: 45px;
+    max-width: 150px;
+    padding: 3px;
+  }
+
+  .menu-toggle {
+    display: block;
+    font-size: 1.8rem;
+  }
+
+  nav ul {
+    display: none;
+    width: 100%;
+    flex-direction: column;
+    gap: 10px;
+    background-color: #5d4037;
+    padding: 15px;
+    margin-top: 10px;
+    border-radius: 8px;
+  }
+
+  nav ul.active {
+    display: flex;
+  }
+
+  nav a {
+    font-size: 1rem;
+  }
+
+  .cart-icon {
+    padding: 0;
+  }
+
+  #cart-link {
+    padding: 5px 10px;
+    font-size: 1.1rem;
+  }
+
+  #cart-count,
+  .cart-counter {
+    width: 22px;
+    height: 22px;
+    font-size: 0.75rem;
+    margin-left: 5px;
+  }
+
+  .hero-content h1 {
+    font-size: 2rem;
+  }
+
+  .menu h2 {
+    font-size: 2.2rem;
+  }
+
+  .menu-item {
+    padding: 18px;
+  }
+
+  .menu-item img {
+    height: 170px;
+  }
+
+  .about h2 {
+    font-size: 2.2rem;
+  }
+
+  .contact h2 {
+    font-size: 2.2rem;
+  }
+
+  .contact-info {
+    padding: 20px;
+  }
+
+  .contact-info p {
+    font-size: 1.1rem;
+  }
+
+  footer {
+    padding: 25px 5%;
+  }
+
+  .footer-content p {
+    font-size: 0.9rem;
+  }
+
+  .social-icons a {
+    width: 35px;
+    height: 35px;
+  }
+
+  .social-icons svg {
+    width: 18px;
+    height: 18px;
+  }
+
+  #whatsapp-button {
+    bottom: 15px;
+    right: 15px;
+    padding: 12px 18px;
+    font-size: 15px;
+  }
+
+  #whatsapp-button i {
+    font-size: 22px;
+    margin-right: 8px;
+  }
+}
+
+/* --- Breakpoint para Telas Grandes (Desktops) --- */
+@media (min-width: 769px) {
+  .menu-toggle {
+    display: none;
+  }
+
+  nav ul {
+    display: flex;
+    list-style: none;
+    gap: 20px;
+  }
+
+  nav a {
+    font-size: 1.1rem;
+  }
+
+  .cart-icon {
+    padding: 0;
+  }
+
+  #cart-link {
+    padding: 5px 10px;
+    font-size: 1.2rem;
+  }
+
+  #cart-count,
+  .cart-counter {
+    width: 24px;
+    height: 24px;
+    font-size: 0.8rem;
+    margin-left: 5px;
+  }
+
+  .hero-content h1 {
+    font-size: 2.8rem;
+  }
+
+  .menu h2 {
+    font-size: 2.5rem;
+  }
+
+  .menu-item {
+    padding: 20px;
+  }
+
+  .menu-item img {
+    height: 180px;
+  }
+
+  .about h2 {
+    font-size: 2.5rem;
+  }
+
+  .contact h2 {
+    font-size: 2.5rem;
+  }
+
+  .contact-info {
+    padding: 20px;
+  }
+
+  .contact-info p {
+    font-size: 1.1rem;
+  }
+
+  footer {
+    padding: 30px 5%;
+  }
+
+  .footer-content p {
+    font-size: 0.9rem;
+  }
+
+  .social-icons a {
+    width: 40px;
+    height: 40px;
+  }
+
+  .social-icons svg {
+    width: 20px;
+    height: 20px;
+  }
+
+  #whatsapp-button {
+    bottom: 20px;
+    right: 20px;
+    padding: 15px 20px;
+    font-size: 16px;
+  }
+
+  #whatsapp-button i {
+    font-size: 24px;
+    margin-right: 10px;
+  }
+}
