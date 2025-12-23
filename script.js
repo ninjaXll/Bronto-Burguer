@@ -115,6 +115,7 @@ let cart = [];
 // Função para salvar o carrinho no localStorage
 function saveCart() {
   localStorage.setItem('bronto-cart', JSON.stringify(cart));
+  console.log('Carrinho salvo:', cart);
 }
 
 // Função para carregar o carrinho do localStorage
@@ -125,6 +126,11 @@ function loadCart() {
   }
   updateCartCount(); // Atualiza o contador do ícone do carrinho
   updateAllQuantitiesDisplay(); // Atualiza todos os contadores dos botões
+
+  // Verifica se está na página de carrinho para carregar os itens
+  if (window.location.pathname.includes('carrinho.html')) {
+    loadCartItems();
+  }
 }
 
 // Função para atualizar a contagem no ícone do carrinho
@@ -151,7 +157,6 @@ function updateAllQuantitiesDisplay() {
     }
   });
 }
-
 
 // Função para adicionar item ao carrinho
 function addToCart(name, price, image) {
@@ -210,7 +215,49 @@ function removeFromCart(name) {
       }, 200);
     });
   }
+}
 
+// Função para carregar e exibir os itens do carrinho na página de carrinho
+function loadCartItems() {
+  const cartItemsContainer = document.getElementById('cart-items');
+  const cartEmptyContainer = document.getElementById('cart-empty');
+  const cartTotalContainer = document.getElementById('cart-total');
+  const saveCart =localStorage.getItem('bronto-cart');
+  if (saveCart) {
+    cart = JSON.parse(saveCart);
+    console.log('Carrinho carregado na página de carrinho:', cart);
+  }
+
+  updateCartCount(); // Atualiza o contador do ícone
+  updateAllQuantitiesDisplay();
+
+  if (cart.length === 0) {
+    cartItemsContainer.style.display = 'none';
+    cartEmptyContainer.style.display = 'block';
+    cartTotalContainer.textContent = 'Total: R$ 0,00';
+  } else {
+    cartItemsContainer.innerHTML = '';
+    let total = 0;
+
+    cart.forEach(item => {
+      total += item.price * item.quantity;
+      const itemElement = document.createElement('div');
+      itemElement.className = 'cart-item';
+      itemElement.innerHTML = `
+        <div class="cart-item-info">
+          <img src="${item.image}" alt="${item.name}">
+          <div class="cart-item-details">
+            <h3>${item.name}</h3>
+            <p>${item.quantity}x</p>
+          </div>
+        </div>
+        <div class="cart-item-price">R$ ${(item.price * item.quantity).toFixed(2).replace('.', ',')}</div>
+      `;
+      cartItemsContainer.appendChild(itemElement);
+    });
+
+    cartTotalContainer.textContent = `Total: R$ ${total.toFixed(2).replace('.', ',')}`;
+  }
 }
 
 // Carrega o carrinho quando a página é aberta
@@ -234,208 +281,98 @@ document.addEventListener('DOMContentLoaded', function() {
       removeFromCart(name);
     });
   });
+
+  // Verifica se está na página de carrinho para inicializar o formulário
+  if (window.location.pathname.includes('carrinho.html')) {
+    initializeCheckoutForm();
+  }
 });
 
-    // Função para carregar o carrinho na página de carrinho
-    document.addEventListener('DOMContentLoaded', function() {
-      loadCart();
+// Função para inicializar o formulário de checkout na página de carrinho
+function initializeCheckoutForm() {
+  const pedidoForm = document.getElementById('pedido-form');
+  const orderTypeSelect = document.getElementById('order-type');
+  const deliveryInfoDiv = document.getElementById('delivery-info');
+  const paymentMethodSelect = document.getElementById('payment-method');
+  const trocoInfoDiv = document.getElementById('troco-info');
 
-      const cartItemsContainer = document.getElementById('cart-items');
-      const cartEmptyContainer = document.getElementById('cart-empty');
-      const cartTotalContainer = document.getElementById('cart-total');
-      const checkoutBtn = document.getElementById('checkout-btn');
+  if (!pedidoForm) return; // Sai se o formulário não existir
 
-      //Elementos do Modal
-      const modal = document.getElementById('info-modal');
-      const orderForm = document.getElementById('order-form');
-      const cancelModal = document.getElementById('cancel-modal');
-      const deliveryAddressDiv = document.getElementById('delivery-address');
-      const changeSection = document.getElementById('change-section');
+  //Evento para Alterar o tipo de pedido.
+  orderTypeSelect.addEventListener('change', function(){
+    if(this.value === 'entrega'){
+      deliveryInfoDiv.style.display = 'block';
+    } else {
+      deliveryInfoDiv.style.display = 'none';
+    }
+  });
+  
+  // Evento para alterar a forma de pagamento
+  paymentMethodSelect.addEventListener('change', function(){
+    if(this.value === 'dinheiro'){
+      trocoInfoDiv.style.display = 'block';
+    } else {
+      trocoInfoDiv.style.display = 'none';
+    }
+  });
 
-      //Referência para os inputs de tipo de Entrega
-      const deliveryRadio = document.querySelector('input[name="delivery-type"][value="entrega"]');
-      const pickupRadio = document.querySelector('input[name="delivery-type"][value="retirada"]');
+  // Evento para submeter o formulário
+  pedidoForm.addEventListener('submit', function(e){
+    e.preventDefault();
 
-      //Referência para os inputs de Forma de pagamento
-      const paymentRadios = document.querySelectorAll('input[name="payment-method"]');
+    const formData = {
+      customerName: document.getElementById('customer-name').value.trim(),
+      orderType: orderTypeSelect.value,
+      address: document.getElementById('address').value.trim(),
+      paymentMethod: paymentMethodSelect.value,
+      changeValue: document.getElementById('troco-value').value.trim(),
+      items: cart,
+      total: parseFloat(document.getElementById('cart-total').textContent.replace('Total: R$ ', '').replace(',', '.'))
+    };
 
-      if (cart.length === 0) {
-        cartItemsContainer.style.display = 'none';
-        cartEmptyContainer.style.display = 'block';
-        cartTotalContainer.textContent = 'Total: R$ 0,00';
-        checkoutBtn.disabled = true;
-        checkoutBtn.style.opacity = '0.5';
-        checkoutBtn.style.pointerEvents = 'none';
-      } else {
-        cartItemsContainer.innerHTML = '';
-        let total = 0;
+    //Validação Simples
+    if(!formData.customerName || !formData.orderType || !formData.paymentMethod){
+      alert('Por favor, preencha todos os campos obrigatórios.');
+      return;
+    }
+    if(formData.orderType === 'entrega' && !formData.address){
+      alert('Por favor, insira o endereço de entrega.');
+      return;
+    }
+    if(formData.paymentMethod === 'dinheiro' && !formData.changeValue){
+      alert('Por favor, insira o valor do troco.');
+      return;
+    }
 
-        cart.forEach(item => {
-          total += item.price * item.quantity;
-          const itemElement = document.createElement('div');
-          itemElement.className = 'cart-item';
-          itemElement.innerHTML = `
-            <div class="cart-item-info">
-              <div class="cart-item-details">
-                <h3>${item.name}</h3>
-                <p>${item.quantity}x</p>
-              </div>
-            </div>
-            <div class="cart-item-price">R$ ${(item.price * item.quantity).toFixed(2).replace('.', ',')}</div>
-          `;
-          cartItemsContainer.appendChild(itemElement);
-        });
+    //Envia os dados para o back-end (substitua a url real do seu backend quando disponível)
+    const backendUrl = 'https://meu-backend-bronto.onrender.com/api/pedidos'; // Removi os espaços extras
 
-        cartTotalContainer.textContent = `Total: R$ ${total.toFixed(2).replace('.', ',')}`;
-        
-        //Abrir modal ao clicar no botão de checkout
-        checkoutBtn.addEventListener('click',function(e){
-          e.preventDefault();
-          document.getElementById('info-modal').style.display = 'flex';
-        });
+    fetch(backendUrl, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(formData)
+    })
+    .then(response => {
+      if(!response.ok){ // <-- Correção: jogar erro se NÃO for ok
+        return response.json().then(err => {throw new Error(err.message || 'Erro na resposta do servidor')}); // Corrigido: err.message
       }
-
-      //Evento para mostrar/ocultar endereço de entrega
-      if(deliveryRadio && pickupRadio){
-        deliveryRadio.addEventListener('change', function(){
-          if(this.checked){
-            document.getElementById('delivery-address').style.display = 'block';
-          }
-        });
-
-        pickupRadio.addEventListener('change', function(){
-          if(this.checked){
-            document.getElementById('delivery-address').style.display = 'none';
-          }
-        });
-      }
-
-      //Evento para mostrar/ocultar campo de troco
-      paymentRadios.forEach(radio => {
-        radio.addEventListener('change', function(){
-          if(this.value === 'dinheiro'){
-            document.getElementById('change-section').style.display = 'block';
-          } else {
-            document.getElementById('change-section').style.display = 'none';
-          }
-        });
-      });
-
-      //fechar o modal
-      cancelModal.addEventListener('click', function(){
-        document.getElementById('info-modal').style.display = 'none';
-      });
-
-      //fechar modal ao clicar fora
-      window.addEventListener('click', function(e){
-        if(e.target === document.getElementById('info-modal')){
-          document.getElementById('info-modal').style.display = 'none';
-        }
-      });
-
-      //Processar envio de formulário
-      orderForm.addEventListener('submit', function(e){
-        e.preventDefault();
-
-        const formData = {
-          name: document.getElementById('customer-name').value,
-          deliveryType: document.querySelector('input[name="delivery-type"]:checked').value,
-          address: document.getElementById('address').value,
-          paymentMethod: document.querySelector('input[name="payment-method"]:checked').value, // Corrigido: obter o valor do radio selecionado
-          changeValue: document.getElementById('change-value').value
-        };
-
-        if(!formData.name){
-          alert('Por favor, insira seu nome completo.');
-          return;
-        }
-        if(!formData.deliveryType){
-          alert('Por favor, selecione o tipo de entrega.');
-          return;
-        }
-        if(formData.deliveryType === 'entrega' && !formData.address){
-          alert('Por favor, insira o endereço de entrega.');
-          return;
-        }
-        if(!formData.paymentMethod){ // Corrigido: verificar formData.paymentMethod
-          alert('Por favor, selecione a forma de pagamento.');
-          return;
-        }
-
-        //Recalcular total para garantir precisão
-        let currentTotal = 0;
-        cart.forEach(item => {
-          currentTotal += item.price * item.quantity;
-        });
-
-      //validação adicional para entrega
-      if(formData.deliveryType === 'entrega' && !formData.address.trim()){ // Corrigido: 'entrega' e não 'emtrega'
-        alert('Por favor, insira o endereço de entrega.');
-        return;
-      }
-
-
-        //Preparar mensagem para o WhatsApp
-        let message = `━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n`;
-        message += `           BRONTO BURGER\n`;
-        message += `━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n`;
-
-        message += `*👤 CLIENTE:* ${formData.name}\n\n`;
-
-        //Itens do pedido
-        message += `*🛒 ITENS DO PEDIDO:*\n`;
-        cart.forEach(item => {
-          let emoji = '🍔';
-          if(item.name.includes('Refrigerante')) emoji = '(🥤)';
-          if(item.name.includes('Batata')) emoji = '(🍟)';
-          if(item.name.includes('vegano')) emoji = '(🥗)';
-          if(item.name.includes('T-Rex')) emoji = '(🦖)';
-          if(item.name.includes('Bronto')) emoji = '(🍔)';
-          message += `• ${emoji} *${item.name}* x${item.quantity} → R$ ${(item.price * item.quantity).toFixed(2).replace('.', ',')}\n`;
-        });
-
-        message += `\n*Total:* R$ ${currentTotal.toFixed(2).replace('.', ',')}\n\n`; // Corrigido: usar currentTotal
-
-        if(formData.deliveryType === 'entrega') {
-          message += `*🚚 Tipo de Entrega:* Entrega\n`;
-          message += `*📍 Endereço:* ${formData.address}\n\n`;
-          message += `*💸 Taxa de Entrega:* R$ 5,00\n`;
-          message += `*💵 Total com Entrega:* R$ ${(currentTotal + 5).toFixed(2).replace('.', ',')}\\n\\n`; // Corrigido: usar currentTotal
-        } else {
-          message += `*🚶 Tipo de Entrega:* Retirada no Local\n\n`;
-        }
-
-        //Forma de pagamento
-        let paymentText = '';
-        switch(formData.paymentMethod){ // Corrigido: usar formData.paymentMethod
-          case 'cartao': // Corrigido: remover 'arguments'
-            paymentText = 'Cartão de Crédito/Débito';
-            break;
-          case 'pix':
-            paymentText = 'PIX';
-            break;
-          case 'dinheiro':
-            paymentText = 'Dinheiro';
-            if(formData.changeValue > 0){
-              paymentText += ` (Troco para R$ ${parseFloat(formData.changeValue).toFixed(2).replace('.', ',')})\\n`; // Corrigido: adicionar \\n
-            }
-            break; 
-        }
-
-        message += `*💳 Forma de Pagamento:* ${paymentText}\n`;
-
-        message += `━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n`;
-        message += `   🍔 Obrigado pelo seu pedido! 🍔\n`;
-        message += `━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n`;
-
-        //Codificar mensagem para URL
-        const encodedMessage = encodeURIComponent(message);
-        const whatsappUrl = `https://wa.me/5571991953918?text=${encodedMessage}`; // Corrigido: remover espaço extra
-
-        //Abrir WhatsApp com a mensagem
-        window.open(whatsappUrl, '_blank');
-
-        //fechar o modal
-        document.getElementById('info-modal').style.display = 'none';
-      });
+      return response.json();
+    })
+    .then(data => {
+      //Sucesso
+      alert('Pedido enviado com sucesso! Acompanhe o status aqui no Site');
+      //Opcional: Limpar o carrinho após o envio
+      cart = [];
+      saveCart();
+      updateCartCount();
+      //Recarregar a página para refletir o carrinho Vazio
+      location.reload();
+    })
+    .catch(error => {
+      console.error('Erro ao enviar o pedido:', error);
+      alert('Houve um erro ao enviar seu pedido. Por favor, tente novamente mais tarde.');
     });
+  });
+}

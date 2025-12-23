@@ -33,45 +33,36 @@
   </header>
 
   <!-- Conteúdo da Página -->
-  <>
-    <div class="cart-container">
-      <h2>Seu Carrinho</h2>
+  <div class="cart-container">
+  <h2>Seu Carrinho</h2>
 
-      <div id="cart-items">
-        <!-- Os itens serão inseridos aqui pelo JavaScript -->
-      </div>
+  <!-- Itens do Carrinho -->
+  <div id="cart-items" class="cart-items">
+    <!-- Os itens serão inseridos aqui pelo JavaScript -->
+  </div>
 
-      <div id="cart-empty" class="empty-cart" style="display: none;">
-        Seu carrinho está vazio.
-      </div>
-
-      <div class="cart-total" id="cart-total">
-        Total: R$ 0,00
-      </div>
-
-    </div>
-  <!-- Novo Modal de Coleta de Informações-->
+  <!-- Total -->
   <div class="cart-total" id="cart-total">
     Total: R$ 0,00
   </div>
 
-  <!-- Novo Formulario de Finalização de Pedido -->
-   <div class="checkou-form">
+  <!-- Formulário de Finalização -->
+  <div class="checkout-form">
     <h3>Dados para Finalizar Pedido</h3>
     <form id="pedido-form">
       <label for="customer-name">Nome Completo:</label>
-      <input type="text" id="customer-name"  required placeholder="Digite seu Nome completo">
+      <input type="text" id="customer-name" required placeholder="Digite seu nome completo">
 
       <label for="order-type">Tipo de Pedido:</label>
       <select id="order-type" required>
         <option value="">Selecione...</option>
+        <option value="retirada">Retirada no Local</option>
         <option value="entrega">Entrega</option>
-        <option value="retirada">Retirada</option>
       </select>
 
       <div id="delivery-info" style="display: none;">
-        <label for="address">Endereço: de entrega</label>
-        <textarea id="address" required placeholder="Ex: Rua dos pirineus, 123 - Centro"></textarea>
+        <label for="address">Endereço de Entrega:</label>
+        <textarea id="address" required placeholder="Ex: Rua dos Dinossauros, 123 - Centro"></textarea>
         <p><strong>Taxa de Entrega:</strong> R$ 5,00</p>
       </div>
 
@@ -84,17 +75,17 @@
       </select>
 
       <div id="troco-info" style="display: none;">
-        <label for="troco-value">Valor do Troco:</label>
-        <input type="number" id="troco-value" step="0.01" placeholder="Ex: 50,00">
+        <label for="troco-value">Valor para Troco:</label>
+        <input type="number" id="troco-value" step="0.01" placeholder="Ex: 150,00">
       </div>
 
-      <button type="submit" class="checkout-bnt">Finalizar Pedido</button>
+      <button type="submit" class="checkout-btn">Finalizar Pedido</button>
     </form>
-   </div>
   </div>
+</div>
   </main>
 
-  <script src="../scripts/cart.js"></script>
+  <script src="/script.js"></script>
 
 </body>
 </html>

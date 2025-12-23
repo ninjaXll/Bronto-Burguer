@@ -672,6 +672,13 @@ footer {
       box-shadow: 0 4px 8px rgba(0,0,0,0.1);
     }
 
+    .cart-container h2 {
+      font-size: 2rem;
+      margin-bottom: 20px;
+      color: #5d4037;
+      font-align: center;
+    }
+
     .cart-header {
       display: flex;
       justify-content: space-between;
@@ -680,12 +687,23 @@ footer {
       border-bottom: 1px solid #eee;
     }
 
+    .card-items {
+      border:1px solid #eee;
+      border-radius: 8px;
+      margin-bottom: 15px;
+      padding: 15px;
+    }
+
     .cart-item {
       display: flex;
       justify-content: space-between;
       align-items: center;
       padding: 15px 0;
       border-bottom: 1px solid #eee;
+    }
+
+    .card-item:last-child {
+      border-bottom: none;
     }
 
     .cart-item-info {
@@ -726,7 +744,36 @@ footer {
       color: #5d4037;
     }
 
-    .checkout-btn {
+    .checkout-form {
+      background-color: #f5e9d3;
+      padding: 20px;
+      border-radius: 10px;
+      margin-top: 20px;
+    }
+
+    .checkout-form h3 {
+      margin-top: 0px;
+      color: #5d4037;
+      font-weight: bold;
+    }
+
+    .checkout-form label {
+      display: block;
+      margin-bottom: 5px;
+      font-weight: bold;
+    }
+
+    .checkout-form input,
+    .checkout-form select,
+    .checkout-form textarea {
+      width: 100%;
+      padding: 10px;
+      margin-bottom: 15px;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+    }
+
+    .checkout-form .checkout-btn {
       display: block;
       width: 100%;
       padding: 15px;
@@ -740,8 +787,17 @@ footer {
       transition: background-color 0.3s;
     }
 
-    .checkout-btn:hover {
+    .checkout-form .checkout-btn:hover {
       background-color: #1da851;
+    }
+
+    #delivery-info,
+    #troco-info {
+      margin-top: 15px;
+      padding: 15px;
+      background-color: #fff;
+      border: 1px solid #ddd;
+      border-radius: 8px;
     }
 
     .empty-cart {
