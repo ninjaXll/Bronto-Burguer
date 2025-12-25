@@ -169,54 +169,56 @@ nav a:focus {
   background-color: rgba(255, 255, 255, 0.1);
 }
 
-/* Carrinho */
+/* --- Carrinho Flutuante Arredondado --- */
 .cart-icon {
   display: flex;
   align-items: center;
 }
 
-.cart-link, .cart-icon a {
+#cart-link {
+  position: relative; /* Essencial para a bolinha verde flutuar */
   display: flex;
   align-items: center;
-  color: white;
-  text-decoration: none;
-  font-size: var(--font-size-md);
-  transition: color var(--transition-normal);
-  padding: var(--spacing-xs) var(--spacing-sm);
-  background-color: rgba(255, 255, 255, 0.1);
-  border-radius: 20px;
-  min-height: 2.5rem; /* 40px */
   justify-content: center;
+  width: 50px;  /* Tamanho fixo para garantir que seja redondo */
+  height: 50px; /* Tamanho fixo para garantir que seja redondo */
+  background-color: #ff6b35;
+  border-radius: 50%;
+  text-decoration: none;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+  transition: transform 0.2s, background-color 0.3s;
 }
 
-.cart-link:hover,
-.cart-link:focus,
-.cart-icon a:hover,
-.cart-icon a:focus {
-  color: var(--secondary-color);
-  animation: pulse var(--transition-slow) ease-in-out infinite;
+#cart-link:hover {
+  background-color: #e55a2b;
+  transform: scale(1.1);
 }
 
-@keyframes pulse {
-  0% { transform: scale(1); }
-  50% { transform: scale(1.1); }
-  100% { transform: scale(1); }
+/* Ícone SVG dentro do botão */
+.cart-svg-icon {
+  width: 24px;
+  height: 24px;
+  stroke: white; /* Garante que as linhas sejam brancas */
+  fill: none;    /* Garante que o fundo seja transparente */
 }
 
-.cart-counter, .cart-icon a span:last-child {
-  background-color: var(--secondary-color);
+/* Bolinha Verde (Contador) */
+.cart-counter {
+  position: absolute;
+  top: -5px;   /* Sobe um pouco para fora do círculo */
+  right: -5px; /* Vai para a direita fora do círculo */
+  background-color: #25D366; /* Verde vibrante */
   color: white;
   border-radius: 50%;
-  width: 1.5rem; /* 24px */
-  height: 1.5rem; /* 24px */
+  width: 22px;
+  height: 22px;
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: var(--font-size-sm);
-  margin-left: var(--spacing-xs);
+  font-size: 0.8rem;
   font-weight: bold;
+  border: 2px solid #fff; /* Opcional: borda branca para separar */
   box-shadow: 0 2px 4px rgba(0,0,0,0.2);
-}
 
 /* ==========================================================================
    #SEÇÃO HERÓI (Promo)
