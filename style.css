@@ -219,6 +219,7 @@ nav a:focus {
   font-weight: bold;
   border: 2px solid #fff; /* Opcional: borda branca para separar */
   box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+}
 
 /* ==========================================================================
    #SEÇÃO HERÓI (Promo)
