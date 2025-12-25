@@ -118,12 +118,13 @@ body {
 }
 
 .logo__img, .logo img {
-  height: 3.125rem; /* 50px */
-  max-width: 12.5rem; /* 200px */
+  height: 5rem; /* 50px */
+  max-width: 15rem; /* 200px */
   object-fit: contain;
   border-radius: 50%;
   filter: drop-shadow(2px 2px 4px rgba(0,0,0,0.3));
   padding: var(--spacing-xs);
+  transition: height 0.3s ease;
 }
 
 /* Botão de menu mobile */
@@ -1015,6 +1016,11 @@ header > * {
     flex-direction: column;
     gap: 15px;
     padding: 15px;
+  }
+
+  .logo__img, .logo img {
+    height: 3.75rem; /* 60px no celular (fica equilibrado) */
+    max-width: 10rem;
   }
 
   .nav__list, nav ul {
