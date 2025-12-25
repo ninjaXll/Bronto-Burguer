@@ -376,3 +376,58 @@ function initializeCheckoutForm() {
     });
   });
 }
+
+/* ==========================================================================
+   #PÁGINA DE ACOMPANHAMENTO
+   ========================================================================== */
+    // Função para carregar o carrinho ao carregar a página
+    document.addEventListener('DOMContentLoaded', function() {
+      loadCart(); // Carrega o carrinho e atualiza o contador
+
+      const trackOrderForm = document.getElementById('track-order-form');
+      const orderNumberInput = document.getElementById('order-number');
+      const orderStatusDiv = document.getElementById('order-status');
+
+      trackOrderForm.addEventListener('submit', function(e) {
+        e.preventDefault(); // Impede o envio padrão do formulário
+
+        const orderNumber = orderNumberInput.value.trim();
+
+        if (!orderNumber) {
+          alert('Por favor, insira o número do pedido.');
+          return;
+        }
+
+        // Exemplo de status (quando o backend estiver pronto, substitua por uma chamada fetch)
+        // Exemplo de chamada fetch para o backend:
+        /*
+        fetch('https://meu-backend-bronto.onrender.com/api/pedidos/' + orderNumber)
+          .then(response => {
+            if (!response.ok) {
+              throw new Error('Pedido não encontrado');
+            }
+            return response.json();
+          })
+          .then(data => {
+            orderStatusDiv.innerHTML = `
+              <h3>Pedido #${data.numero}</h3>
+              <p><strong>Cliente:</strong> ${data.cliente}</p>
+              <p><strong>Status:</strong> ${data.status}</p>
+              <p><strong>Itens:</strong> ${data.itens.map(item => item.nome).join(', ')}</p>
+              <p><strong>Total:</strong> R$ ${data.total}</p>
+            `;
+          })
+          .catch(error => {
+            orderStatusDiv.innerHTML = `<p class="error">Erro: ${error.message}</p>`;
+          });
+        */
+
+        // Exemplo de status temporário (até o backend estar pronto)
+        orderStatusDiv.innerHTML = `
+          <h3>Pedido #${orderNumber}</h3>
+          <p><strong>Status:</strong> Em Preparo</p>
+          <p><strong>Previsão de Entrega:</strong> Em 25 minutos</p>
+          <p><strong>Forma de Pagamento:</strong> Cartão de Crédito</p>
+        `;
+      });
+    });
