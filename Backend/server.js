@@ -208,3 +208,4 @@ app.get('/api/pedidos/status/:status', (req, res) => {
 // Inicia o servidor
 app.listen(PORT, () => {
   console.log(`Servidor backend rodando na porta ${PORT}`);
+});
