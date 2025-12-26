@@ -30,20 +30,20 @@
   --font-size-xs: 0.75rem;
   --font-size-sm: 0.875rem;
   --font-size-base: 1rem;
-  --font-size-md: 1.125rem;
+  --font-size-md: 1.1rem;
   --font-size-lg: 1.25rem;
   --font-size-xl: 1.5rem;
-  --font-size-2xl: 2rem;
-  --font-size-3xl: 2.5rem;
+  --font-size-2xl: 1.8rem;
+  --font-size-3xl: 2.2rem;
   --font-size-4xl: 2.8rem;
 
   /* Espaçamento */
-  --spacing-xs: 0.3125rem;    /* 5px */
-  --spacing-sm: 0.625rem;     /* 10px */
-  --spacing-md: 1.25rem;      /* 20px */
-  --spacing-lg: 1.875rem;     /* 30px */
-  --spacing-xl: 2.5rem;       /* 40px */
-  --spacing-2xl: 3.75rem;     /* 60px */
+  --spacing-xs: 0.3rem;    /* 5px */
+  --spacing-sm: 0.5rem;     /* 10px */
+  --spacing-md: 1rem;      /* 20px */
+  --spacing-lg: 1.5rem;     /* 30px */
+  --spacing-xl: 2rem;       /* 40px */
+  --spacing-2xl: 3rem;     /* 60px */
 
   /* Breakpoints */
   --breakpoint-xs: 320px;
@@ -230,14 +230,14 @@ nav a:focus {
   background: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url('assets/images/bg-hero.jpg');
   background-size: cover;
   background-position: center;
-  min-height: 80vh;
+  min-height: 50vh;
   display: flex;
   align-items: center;
   justify-content: center;
   text-align: center;
   color: white;
   position: relative;
-  margin-top: 70px; /* Compensa o header fixo */
+  margin-top: 0px; /* Compensa o header fixo */
 }
 
 .hero__content h1, .promo-carousel h1 {
@@ -999,13 +999,13 @@ header > * {
 }
 
 /* 2. Regras para Tablets e Desktops Menores (768px a 1024px) */
-@media (max-width: 1024px) {
-  .menu-items {
-    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+@media (min-width: 768px) {
+  .logo__img, .logo img {
+    height: 5rem;    /* Aprox. 80px - Fica bom só em telas grandes */
+    padding: var(--spacing-xs);
   }
-  
-  .hero {
-    min-height: 60vh; /* Altura menor em tablets */
+  .hero, .promo-carousel {
+    min-height: 70vh; 
   }
 }
 
@@ -1019,8 +1019,13 @@ header > * {
   }
 
   .logo__img, .logo img {
-    height: 3.75rem; /* 60px no celular (fica equilibrado) */
+    height: 3.5rem; /* 60px no celular (fica equilibrado) */
     max-width: 10rem;
+    object-fit: contain;
+    border-radius: 50%;
+    filter: drop-shadow(2px 2px 4px rgba(0,0,0,0.3));
+    padding: 2px;
+    transition: height 0.3s ease;
   }
 
   .nav__list, nav ul {
