@@ -8,6 +8,11 @@
  * - Considerações de acessibilidade
  */
 
+/* 1. Forçar tamanho base menor (Isso diminui TUDO no site automaticamente) */
+html {
+  font-size: 14px; /* O padrão é 16px. Mudar para 14px reduz o site inteiro em ~12% */
+}
+
 /* Propriedades Personalizadas (Variáveis) */
 :root {
   /* Cores (Mantidas) */
@@ -27,23 +32,23 @@
   /* Tipografia (REDUZIDA) */
   --font-family: 'Open Sans', Arial, sans-serif;
   --font-family-heading: 'Bebas Neue', sans-serif;
-  --font-size-xs: 0.75rem;
-  --font-size-sm: 0.875rem;
+  --font-size-xs: 0.7rem;
+  --font-size-sm: 0.8rem;
   --font-size-base: 1rem;
-  --font-size-md: 1.1rem;      /* Reduzido */
-  --font-size-lg: 1.25rem;
-  --font-size-xl: 1.5rem;
-  --font-size-2xl: 1.8rem;     /* Reduzido de 2rem */
-  --font-size-3xl: 2.2rem;     /* Reduzido de 2.5rem */
-  --font-size-4xl: 2.8rem;
+  --font-size-md: 1.1rem;
+  --font-size-lg: 1.2rem;
+  --font-size-xl: 1.3rem;      /* Antes era 1.5rem */
+  --font-size-2xl: 1.5rem;     /* Antes era 1.8rem */
+  --font-size-3xl: 1.8rem;     /* Títulos das seções (Antes 2.2rem) */
+  --font-size-4xl: 2.2rem;
 
   /* Espaçamento (REDUZIDO) */
-  --spacing-xs: 0.3rem;
-  --spacing-sm: 0.5rem;
-  --spacing-md: 1rem;          /* Reduzido */
-  --spacing-lg: 1.5rem;        /* Reduzido */
-  --spacing-xl: 2rem;          /* Reduzido */
-  --spacing-2xl: 3rem;         /* Reduzido de 60px para ~48px */
+  --spacing-xs: 0.25rem;       /* 3.5px */
+  --spacing-sm: 0.5rem;        /* 7px */
+  --spacing-md: 0.75rem;       /* 10px (Antes 16px) */
+  --spacing-lg: 1.25rem;       /* 17px (Antes 24px) */
+  --spacing-xl: 1.5rem;        /* 21px (Antes 32px) */
+  --spacing-2xl: 2rem;         /* 28px (Antes 48px/60px) - MUITO MENOR AGORA */
 
   /* Breakpoints (Mantidos) */
   --breakpoint-xs: 320px;
@@ -51,10 +56,15 @@
   --breakpoint-md: 768px;
   --breakpoint-lg: 1024px;
   --breakpoint-xl: 1200px;
+
+  /* Transições */
   --transition-fast: 0.2s ease;
   --transition-normal: 0.3s ease;
   --transition-slow: 0.5s ease;
 }
+
+
+
 
 /* ==========================================================================
    #RESET E ESTILOS BÁSICOS
@@ -69,9 +79,10 @@
 
 body {
   font-family: var(--font-family);
-  line-height: 1.6;
+  line-height: 1.5;
   color: var(--text-color);
   background-color: var(--background-color);
+  overflow-x: hidden;
 }
 
 /* Link de pular para conteúdo (acessibilidade) */
@@ -228,7 +239,7 @@ nav a:focus {
   background: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url('assets/images/bg-hero.jpg');
   background-size: cover;
   background-position: center;
-  min-height: 50vh;
+  min-height: 40vh;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -1003,7 +1014,7 @@ header > * {
     padding: var(--spacing-xs);
   }
   .hero, .promo-carousel {
-    min-height: 70vh; 
+    min-height: 10vh; 
   }
 }
 
