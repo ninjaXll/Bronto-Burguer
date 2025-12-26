@@ -10,49 +10,47 @@
 
 /* Propriedades Personalizadas (Variáveis) */
 :root {
-  /* Cores */
-  --primary-color: #5d4037;      /* Marrom terroso */
-  --primary-color-dark: #4e342e; /* Marrom mais escuro */
-  --secondary-color: #ff6b35;    /* Laranja queimado */
-  --secondary-color-dark: #e55a2b; /* Laranja mais escuro */
-  --accent-color: #4a6b4a;       /* Verde musgo */
-  --accent-color-light: #6b8c6b; /* Verde mais claro */
-  --background-color: #f5e9d3;   /* Bege claro */
+  /* Cores (Mantidas) */
+  --primary-color: #5d4037;
+  --primary-color-dark: #4e342e;
+  --secondary-color: #ff6b35;
+  --secondary-color-dark: #e55a2b;
+  --accent-color: #4a6b4a;
+  --accent-color-light: #6b8c6b;
+  --background-color: #f5e9d3;
   --text-color: #333;
   --text-color-light: #666;
   --white: #ffffff;
   --shadow: 0 4px 8px rgba(0,0,0,0.1);
   --shadow-hover: 0 6px 12px rgba(0,0,0,0.15);
 
-  /* Tipografia */
+  /* Tipografia (REDUZIDA) */
   --font-family: 'Open Sans', Arial, sans-serif;
   --font-family-heading: 'Bebas Neue', sans-serif;
   --font-size-xs: 0.75rem;
   --font-size-sm: 0.875rem;
   --font-size-base: 1rem;
-  --font-size-md: 1.1rem;
+  --font-size-md: 1.1rem;      /* Reduzido */
   --font-size-lg: 1.25rem;
   --font-size-xl: 1.5rem;
-  --font-size-2xl: 1.8rem;
-  --font-size-3xl: 2.2rem;
+  --font-size-2xl: 1.8rem;     /* Reduzido de 2rem */
+  --font-size-3xl: 2.2rem;     /* Reduzido de 2.5rem */
   --font-size-4xl: 2.8rem;
 
-  /* Espaçamento */
-  --spacing-xs: 0.3rem;    /* 5px */
-  --spacing-sm: 0.5rem;     /* 10px */
-  --spacing-md: 1rem;      /* 20px */
-  --spacing-lg: 1.5rem;     /* 30px */
-  --spacing-xl: 2rem;       /* 40px */
-  --spacing-2xl: 3rem;     /* 60px */
+  /* Espaçamento (REDUZIDO) */
+  --spacing-xs: 0.3rem;
+  --spacing-sm: 0.5rem;
+  --spacing-md: 1rem;          /* Reduzido */
+  --spacing-lg: 1.5rem;        /* Reduzido */
+  --spacing-xl: 2rem;          /* Reduzido */
+  --spacing-2xl: 3rem;         /* Reduzido de 60px para ~48px */
 
-  /* Breakpoints */
+  /* Breakpoints (Mantidos) */
   --breakpoint-xs: 320px;
   --breakpoint-sm: 480px;
   --breakpoint-md: 768px;
   --breakpoint-lg: 1024px;
   --breakpoint-xl: 1200px;
-
-  /* Transições */
   --transition-fast: 0.2s ease;
   --transition-normal: 0.3s ease;
   --transition-slow: 0.5s ease;
@@ -1019,7 +1017,7 @@ header > * {
   }
 
   .logo__img, .logo img {
-    height: 3.5rem; /* 60px no celular (fica equilibrado) */
+    height: 3.5rem;      /* Pequeno no Celular (~56px) */
     max-width: 10rem;
     object-fit: contain;
     border-radius: 50%;
