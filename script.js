@@ -314,30 +314,31 @@ function initializeCheckoutForm() {
 
     const formData = {
       customerName: document.getElementById('customer-name').value.trim(),
-      orderType: orderTypeSelect.value,
-      address: document.getElementById('address').value.trim(),
-      paymentMethod: paymentMethodSelect.value,
-      changeValue: document.getElementById('troco-value').value.trim(),
-      items: cart,
-      total: parseFloat(document.getElementById('cart-total').textContent.replace('Total: R$ ', '').replace(',', '.'))
+    customerPhone: document.getElementById('customer-phone').value.trim(), // <- Adicionado
+    orderType: orderTypeSelect.value,
+    address: document.getElementById('address').value.trim(),
+    paymentMethod: paymentMethodSelect.value,
+    changeValue: document.getElementById('troco-value').value.trim(),
+    items: cart,
+    total: parseFloat(cartTotalContainer.textContent.replace('Total: R$ ', '').replace(',', '.'))
     };
 
     //Validação Simples
-    if(!formData.customerName || !formData.orderType || !formData.paymentMethod){
-      alert('Por favor, preencha todos os campos obrigatórios.');
-      return;
-    }
+    if(!formData.customerName || !formData.customerPhone || !formData.orderType || !formData.paymentMethod){ // <- Adicionado customerPhone
+     alert('Por favor, preencha todos os campos obrigatórios.');
+     return;
+  }
     if(formData.orderType === 'entrega' && !formData.address){
-      alert('Por favor, insira o endereço de entrega.');
-      return;
-    }
-    if(formData.paymentMethod === 'dinheiro' && !formData.changeValue){
-      alert('Por favor, insira o valor do troco.');
-      return;
-    }
+     alert('Por favor, insira o endereço de entrega.');
+     return;
+  }
+   if(formData.paymentMethod === 'dinheiro' && !formData.changeValue){
+     alert('Por favor, insira o valor do troco.');
+     return;
+  }
 
     //Envia os dados para o back-end (substitua a url real do seu backend quando disponível)
-    const backendUrl = 'https://meu-backend-bronto.onrender.com/api/pedidos'; // Removi os espaços extras
+    const backendUrl = 'http://localhost:3000/api/pedidos'; // Removi os espaços extras
 
     fetch(backendUrl, {
       method: 'POST',
@@ -377,7 +378,7 @@ function initializeCheckoutForm() {
       loadCart(); // Carrega o carrinho e atualiza o contador
 
       const trackOrderForm = document.getElementById('track-order-form');
-      const orderNumberInput = document.getElementById('order-number');
+      const orderCodeInput = document.getElementById('order-code'); // <- Alterado
       const orderStatusDiv = document.getElementById('order-status');
 
       trackOrderForm.addEventListener('submit', function(e) {
@@ -392,8 +393,10 @@ function initializeCheckoutForm() {
 
         // Exemplo de status (quando o backend estiver pronto, substitua por uma chamada fetch)
         // Exemplo de chamada fetch para o backend:
-        /*
-        fetch('https://meu-backend-bronto.onrender.com/api/pedidos/' + orderNumber)
+
+        const backendUrl = `http://localhost:3000/api/pedidos/codigo/${orderCode}`; // <- Alterado
+
+        fetch(backendUrl)
           .then(response => {
             if (!response.ok) {
               throw new Error('Pedido não encontrado');
@@ -401,18 +404,24 @@ function initializeCheckoutForm() {
             return response.json();
           })
           .then(data => {
-            orderStatusDiv.innerHTML = `
-              <h3>Pedido #${data.numero}</h3>
-              <p><strong>Cliente:</strong> ${data.cliente}</p>
-              <p><strong>Status:</strong> ${data.status}</p>
-              <p><strong>Itens:</strong> ${data.itens.map(item => item.nome).join(', ')}</p>
-              <p><strong>Total:</strong> R$ ${data.total}</p>
-            `;
-          })
-          .catch(error => {
-            orderStatusDiv.innerHTML = `<p class="error">Erro: ${error.message}</p>`;
-          });
-        */
+      orderStatusDiv.style.display = 'block';
+      orderStatusDiv.innerHTML = `
+        <h3>Pedido #${data.id}</h3>
+        <p><strong>Cliente:</strong> ${data.customerName}</p>
+        <p><strong>Status:</strong> ${data.status}</p>
+        <p><strong>Tipo:</strong> ${data.orderType}</p>
+        ${data.address ? `<p><strong>Endereço:</strong> ${data.address}</p>` : ''}
+        <p><strong>Forma de Pagamento:</strong> ${data.paymentMethod}</p>
+        ${data.changeValue ? `<p><strong>Troco para:</strong> R$ ${data.changeValue}</p>` : ''}
+        <p><strong>Total:</strong> R$ ${data.total}</p>
+        <p><strong>Itens:</strong> ${data.itens}</p>
+      `;
+    })
+    .catch(error => {
+      orderStatusDiv.style.display = 'block';
+      orderStatusDiv.innerHTML = `<p class="error">Erro: ${error.message}</p>`;
+    });
+        
 
         // Exemplo de status temporário (até o backend estar pronto)
         orderStatusDiv.innerHTML = `
