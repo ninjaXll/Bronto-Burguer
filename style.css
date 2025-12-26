@@ -983,7 +983,7 @@ nav a:focus {
 
 /* 1. Container Global para Desktops Grandes
    Isso impede que o site fique "esticado" em monitores ultrawide ou grandes TV */
-.header, .hero, .menu, .about, .contact, .footer, .cart-container {
+.header, .hero, .menu, .about, .contact, .footer, {
   max-width: 1400px; /* Limite máximo de largura */
   margin-left: auto;
   margin-right: auto;
