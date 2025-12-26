@@ -178,15 +178,7 @@ function addToCart(name, price, image) {
   updateAllQuantitiesDisplay(); // Atualiza todos os contadores dos botões
 
   // Feedback visual ao adicionar item
-  const buttons = document.querySelectorAll(`.add-to-cart[data-name="${name}"]`);
-  buttons.forEach(button => {
-    button.style.transform = 'scale(1.2)';
-    button.style.backgroundColor = '#e55a2b';
-    setTimeout(() => {
-      button.style.transform = 'scale(1)';
-      button.style.backgroundColor = '';
-    }, 200);
-  });
+  showToast(`${name} adicionado ao carrinho! 🍔`);
 }
 
 // Função para remover item do carrinho
@@ -431,3 +423,21 @@ function initializeCheckoutForm() {
         `;
       });
     });
+
+    /* ==========================================================================
+   #Notificação TOAST
+   ========================================================================== */
+
+   // Função para exibir notificações Toast
+function showToast(message) {
+  const toast = document.getElementById("toast");
+  if (toast) {
+    toast.textContent = message; // Define o texto (ex: "X-Burger adicionado!")
+    toast.className = "show";    // Mostra
+    
+    // Esconde depois de 3 segundos
+    setTimeout(function(){ 
+      toast.className = toast.className.replace("show", ""); 
+    }, 3000);
+  }
+}

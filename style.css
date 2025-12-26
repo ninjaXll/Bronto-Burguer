@@ -1129,3 +1129,39 @@ nav a:focus,
     border-color: white;
   }
 }
+
+
+/* ==========================================================================
+   #Notificação TOAST
+   ========================================================================== */
+   
+/* --- Notificação TOAST (Pop-up elegante) --- */
+#toast {
+  visibility: hidden;
+  min-width: 250px;
+  background-color: #333; /* Fundo escuro */
+  color: #fff;            /* Texto branco */
+  text-align: center;
+  border-radius: 50px;    /* Bordas redondas moderninhas */
+  padding: 16px;
+  position: fixed;
+  z-index: 10000;         /* Fica acima de tudo */
+  left: 50%;
+  bottom: 30px;
+  transform: translateX(-50%); /* Centraliza na tela */
+  font-size: 1rem;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+  opacity: 0;
+  transition: opacity 0.5s, bottom 0.5s;
+}
+
+/* Classe que faz ele aparecer */
+#toast.show {
+  visibility: visible;
+  opacity: 1;
+  bottom: 50px; /* Sobe um pouco */
+}
+
+/* ==========================================================================
+   #ACESSIBILIDADE
+   ========================================================================== */
