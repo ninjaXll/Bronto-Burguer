@@ -312,24 +312,22 @@ function initializeCheckoutForm() {
   pedidoForm.addEventListener('submit', function(e){
     e.preventDefault();
 
+    // Validação extra do telefone no frontend
     const phoneField = document.getElementById('customer-phone');
-    const rawPhone = phoneField.value.replace(/\D/g, "");
-
-    if (rawPhone.length < 11) {
-      alert("Por favor, digite um número de celular completo com DDD.\nExemplo: (71) 99999-9999");
-      phoneField.focus();
-      return;
+    if (phoneField.value.replace(/\D/g, "").length < 10) {
+        alert("Por favor, preencha o telefone corretamente.");
+        return;
     }
 
     const formData = {
-      customerName: document.getElementById('customer-name').value.trim(),
-      customerPhone: document.getElementById('customer-phone').value.trim(), // <- Adicionado
-      orderType: orderTypeSelect.value,
-      address: document.getElementById('address').value.trim(),
-      paymentMethod: paymentMethodSelect.value,
-      changeValue: document.getElementById('troco-value').value.trim(),
-      items: cart,
-      total: parseFloat(cartTotalContainer.textContent.replace('Total: R$ ', '').replace(',', '.'))
+        customerName: document.getElementById('customer-name').value,
+        customerPhone: document.getElementById('customer-phone').value, // <--- IMPORTANTE: Tem de ser customerPhone
+        orderType: document.getElementById('order-type').value,
+        address: document.getElementById('address').value,
+        paymentMethod: document.getElementById('payment-method').value,
+        changeValue: document.getElementById('troco-value').value,
+        items: cart,
+        total: cart.reduce((acc, item) => acc + (item.price * item.quantity), 0)
     };
 
     //Validação Simples

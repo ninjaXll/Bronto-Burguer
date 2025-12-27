@@ -32,10 +32,20 @@ function initDb() {
     )
   `;
 
-  db.run(sqlCreate, (err) => {
-    if (err) console.error("Erro ao criar tabela:", err);
-    else console.log("📦 Tabela 'pedidos' verificada.");
-  });
+  db.run(`
+    CREATE TABLE IF NOT EXISTS pedidos (
+      id INTEGER PRIMARY KEY AUTOINCREMENT,
+      customerName TEXT NOT NULL,
+      orderType TEXT NOT NULL,
+      address TEXT,
+      paymentMethod TEXT NOT NULL,
+      changeValue TEXT,
+      total REAL NOT NULL,
+      status TEXT DEFAULT 'Recebido',
+      createdAt DATETIME DEFAULT CURRENT_TIMESTAMP,  /* <--- FALTAVA ESTA VÍRGULA AQUI */
+      customerPhone TEXT
+    )
+  `);
 }
 
 module.exports = db;

@@ -18,7 +18,7 @@ app.use(cors());
 app.post('/api/pedidos', (req, res) => {
   const {
     customerName,
-    customerPhone, // Vamos validar esta variável
+    customerPhone, // O servidor espera este nome exato
     orderType,
     address,
     paymentMethod,
@@ -27,20 +27,17 @@ app.post('/api/pedidos', (req, res) => {
     total
   } = req.body;
 
-  // --- PROTEÇÃO DO 1% (Validação no Servidor) ---
-  // 1. Remove tudo que não é número do customerPhone
+  // 1. PROTEÇÃO CONTRA ERROS (O "1%")
+  // Garante que o telefone tem números suficientes antes de tentar salvar
   const apenasNumeros = customerPhone ? customerPhone.replace(/\D/g, '') : '';
-
-  // 2. Verifica se tem o tamanho certo (10 ou 11 dígitos)
-  // 10 dígitos = Fixo (XX) 9999-9999 | 11 dígitos = Celular (XX) 99999-9999
+  
   if (apenasNumeros.length < 10 || apenasNumeros.length > 11) {
     return res.status(400).json({ 
-      error: "Número de telefone inválido. O servidor precisa de 10 ou 11 dígitos (com DDD)." 
+      error: "Número de telefone inválido. Digite DDD + Número (Ex: 71999999999)." 
     });
   }
-  // ------------------------------------------------
 
-  // Validação básica
+  // 2. VALIDAÇÃO BÁSICA
   if (!customerName || !customerPhone || !orderType || !paymentMethod || !items || !Array.isArray(items) || items.length === 0 || total === undefined) {
     return res.status(400).json({ error: 'Dados do pedido incompletos.' });
   }
@@ -49,11 +46,7 @@ app.post('/api/pedidos', (req, res) => {
     return res.status(400).json({ error: 'Endereço é obrigatório para entrega.' });
   }
 
-  if (paymentMethod === 'dinheiro' && changeValue === undefined) {
-    return res.status(400).json({ error: 'Valor do troco é obrigatório para pagamento em dinheiro.' });
-  }
-
-  // Inserir o pedido principal
+  // 3. INSERIR NO BANCO
   const insertPedidoSQL = `
     INSERT INTO pedidos (customerName, customerPhone, orderType, address, paymentMethod, changeValue, total)
     VALUES (?, ?, ?, ?, ?, ?, ?)
@@ -62,38 +55,39 @@ app.post('/api/pedidos', (req, res) => {
   db.run(insertPedidoSQL, [customerName, customerPhone, orderType, address, paymentMethod, changeValue, total], function (err) {
     if (err) {
       console.error('Erro ao inserir pedido:', err.message);
-      return res.status(500).json({ error: 'Erro ao salvar pedido.' });
+      return res.status(500).json({ error: 'Erro ao salvar pedido no banco de dados.' });
     }
 
-    const pedidoId = this.lastID; // Obtém o ID do pedido recém-inserido
+    const pedidoId = this.lastID;
 
-    // Inserir os itens do pedido
-    const insertItemSQL = `
-      INSERT INTO itens_pedido (pedidoId, itemName, itemPrice, quantity)
-      VALUES (?, ?, ?, ?)
-    `;
-
+    // 4. SALVAR OS ITENS
+    const insertItemSQL = `INSERT INTO itens_pedido (pedidoId, itemName, itemPrice, quantity) VALUES (?, ?, ?, ?)`;
+    
     let itemsInserted = 0;
     let hasError = false;
 
     items.forEach((item) => {
       db.run(insertItemSQL, [pedidoId, item.name, item.price, item.quantity], function (err) {
         if (err) {
-          console.error('Erro ao inserir item do pedido:', err.message);
+          console.error('Erro no item:', err.message);
           hasError = true;
         }
         itemsInserted++;
-        // Só responde quando todos os itens forem processados
-        if (itemsInserted === items.length && !hasError) {
-          // SUCESSO: Retorna também o código para o frontend mostrar (4 últimos dígitos)
-          const codigoRastreio = customerPhone.slice(-4);
-          res.status(201).json({ 
-            message: 'Pedido salvo com sucesso!', 
-            pedidoId,
-            codigo: codigoRastreio 
-          });
-        } else if (itemsInserted === items.length && hasError) {
-          res.status(500).json({ error: 'Erro ao salvar itens do pedido.' });
+        
+        // Quando terminar todos os itens, envia a resposta final
+        if (itemsInserted === items.length) {
+          if (hasError) {
+             return res.status(500).json({ error: 'Erro ao salvar itens do pedido.' });
+          } else {
+             // SUCESSO! GERA O CÓDIGO DE RASTREIO (4 últimos dígitos)
+             const codigoRastreio = customerPhone.slice(-4);
+             
+             return res.status(201).json({ 
+               message: 'Pedido salvo com sucesso!', 
+               pedidoId,
+               codigo: codigoRastreio // Envia o código para o Frontend mostrar
+             });
+          }
         }
       });
     });
