@@ -312,15 +312,24 @@ function initializeCheckoutForm() {
   pedidoForm.addEventListener('submit', function(e){
     e.preventDefault();
 
+    const phoneField = document.getElementById('customer-phone');
+    const rawPhone = phoneField.value.replace(/\D/g, "");
+
+    if (rawPhone.length < 11) {
+      alert("Por favor, digite um número de celular completo com DDD.\nExemplo: (71) 99999-9999");
+      phoneField.focus();
+      return;
+    }
+
     const formData = {
       customerName: document.getElementById('customer-name').value.trim(),
-    customerPhone: document.getElementById('customer-phone').value.trim(), // <- Adicionado
-    orderType: orderTypeSelect.value,
-    address: document.getElementById('address').value.trim(),
-    paymentMethod: paymentMethodSelect.value,
-    changeValue: document.getElementById('troco-value').value.trim(),
-    items: cart,
-    total: parseFloat(cartTotalContainer.textContent.replace('Total: R$ ', '').replace(',', '.'))
+      customerPhone: document.getElementById('customer-phone').value.trim(), // <- Adicionado
+      orderType: orderTypeSelect.value,
+      address: document.getElementById('address').value.trim(),
+      paymentMethod: paymentMethodSelect.value,
+      changeValue: document.getElementById('troco-value').value.trim(),
+      items: cart,
+      total: parseFloat(cartTotalContainer.textContent.replace('Total: R$ ', '').replace(',', '.'))
     };
 
     //Validação Simples
@@ -450,3 +459,62 @@ function showToast(message) {
     }, 3000);
   }
 }
+
+/* =========================================
+   MÁSCARA E VALIDAÇÃO DE TELEFONE
+   ========================================= */
+document.addEventListener('DOMContentLoaded', function() {
+    const phoneInput = document.getElementById('customer-phone');
+
+    if (phoneInput) {
+        phoneInput.addEventListener('input', function (e) {
+            let value = e.target.value;
+
+            // 1. Remove tudo o que não é número
+            value = value.replace(/\D/g, "");
+
+            // 2. Limita a 11 dígitos (DDD + 9 números)
+            if (value.length > 11) {
+                value = value.slice(0, 11);
+            }
+
+            // 3. Aplica a formatação (XX) XXXXX-XXXX
+            // Se tiver mais de 10 dígitos (celular com 9 dígitos)
+            if (value.length > 10) {
+                value = value.replace(/^(\d\d)(\d{5})(\d{4}).*/, "($1) $2-$3");
+            } 
+            // Se tiver entre 6 e 10 dígitos
+            else if (value.length > 5) {
+                value = value.replace(/^(\d\d)(\d{4})(\d{0,4}).*/, "($1) $2-$3");
+            } 
+            // Se tiver entre 2 e 5 dígitos
+            else if (value.length > 2) {
+                value = value.replace(/^(\d\d)(\d{0,5}).*/, "($1) $2");
+            } 
+            // Apenas DDD
+            else {
+                value = value.replace(/^(\d*)/, "($1");
+            }
+
+            e.target.value = value;
+        });
+
+        // 4. Bloqueia o envio se o número for inválido
+        const form = document.getElementById('pedido-form');
+        if (form) {
+            form.addEventListener('submit', function(e) {
+                const rawPhone = phoneInput.value.replace(/\D/g, "");
+                // Valida se tem pelo menos 10 digitos (DDD + 8 numeros) ou 11 (DDD + 9)
+                if (rawPhone.length < 10) {
+                    e.preventDefault(); // Cancela o envio
+                    e.stopImmediatePropagation(); // Para outros scripts
+                    alert("Por favor, digite um número de telefone válido com DDD.\nExemplo: (71) 99999-9999");
+                    phoneInput.focus();
+                    
+                    // Remove a formatação de "Sucesso" se ela tiver aparecido por engano
+                    return false; 
+                }
+            });
+        }
+    }
+});

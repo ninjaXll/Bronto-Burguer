@@ -18,7 +18,7 @@ app.use(cors());
 app.post('/api/pedidos', (req, res) => {
   const {
     customerName,
-    customerPhone,
+    customerPhone, // Vamos validar esta variável
     orderType,
     address,
     paymentMethod,
@@ -27,8 +27,21 @@ app.post('/api/pedidos', (req, res) => {
     total
   } = req.body;
 
+  // --- PROTEÇÃO DO 1% (Validação no Servidor) ---
+  // 1. Remove tudo que não é número do customerPhone
+  const apenasNumeros = customerPhone ? customerPhone.replace(/\D/g, '') : '';
+
+  // 2. Verifica se tem o tamanho certo (10 ou 11 dígitos)
+  // 10 dígitos = Fixo (XX) 9999-9999 | 11 dígitos = Celular (XX) 99999-9999
+  if (apenasNumeros.length < 10 || apenasNumeros.length > 11) {
+    return res.status(400).json({ 
+      error: "Número de telefone inválido. O servidor precisa de 10 ou 11 dígitos (com DDD)." 
+    });
+  }
+  // ------------------------------------------------
+
   // Validação básica
-  if (!customerName || !customerPhone || !orderType || !paymentMethod || !items || !Array.isArray(items) || items.length === 0 || total === undefined) { // <- Adicionado customerPhone
+  if (!customerName || !customerPhone || !orderType || !paymentMethod || !items || !Array.isArray(items) || items.length === 0 || total === undefined) {
     return res.status(400).json({ error: 'Dados do pedido incompletos.' });
   }
 
@@ -42,11 +55,11 @@ app.post('/api/pedidos', (req, res) => {
 
   // Inserir o pedido principal
   const insertPedidoSQL = `
-    INSERT INTO pedidos (customerName, customerPhone, orderType, address, paymentMethod, changeValue, total) -- <- Adicionado customerPhone
+    INSERT INTO pedidos (customerName, customerPhone, orderType, address, paymentMethod, changeValue, total)
     VALUES (?, ?, ?, ?, ?, ?, ?)
   `;
 
-  db.run(insertPedidoSQL, [customerName, orderType, address, paymentMethod, changeValue, total], function (err) {
+  db.run(insertPedidoSQL, [customerName, customerPhone, orderType, address, paymentMethod, changeValue, total], function (err) {
     if (err) {
       console.error('Erro ao inserir pedido:', err.message);
       return res.status(500).json({ error: 'Erro ao salvar pedido.' });
@@ -72,9 +85,14 @@ app.post('/api/pedidos', (req, res) => {
         itemsInserted++;
         // Só responde quando todos os itens forem processados
         if (itemsInserted === items.length && !hasError) {
-          res.status(201).json({ message: 'Pedido salvo com sucesso!', pedidoId });
+          // SUCESSO: Retorna também o código para o frontend mostrar (4 últimos dígitos)
+          const codigoRastreio = customerPhone.slice(-4);
+          res.status(201).json({ 
+            message: 'Pedido salvo com sucesso!', 
+            pedidoId,
+            codigo: codigoRastreio 
+          });
         } else if (itemsInserted === items.length && hasError) {
-          // Se houve erro, envia uma resposta de erro genérica
           res.status(500).json({ error: 'Erro ao salvar itens do pedido.' });
         }
       });

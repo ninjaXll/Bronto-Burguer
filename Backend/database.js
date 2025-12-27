@@ -4,42 +4,38 @@ const path = require('path');
 // Caminho para o arquivo do banco de dados
 const dbPath = path.resolve(__dirname, 'bronto_burger.db');
 
-// Abre o banco de dados (cria se não existir)
 const db = new sqlite3.Database(dbPath, (err) => {
   if (err) {
-    console.error('Erro ao abrir o banco de dados:', err.message);
+    console.error('❌ Erro ao conectar ao banco de dados:', err.message);
   } else {
-    console.log('Conectado ao banco de dados SQLite.');
+    console.log('✅ Conectado ao banco de dados SQLite.');
+    initDb();
   }
 });
 
-// Cria a tabela de pedidos se ela não existir
-db.serialize(() => {
-  db.run(`
+function initDb() {
+  // Cria a tabela alinhada com o server.js
+  const sqlCreate = `
     CREATE TABLE IF NOT EXISTS pedidos (
       id INTEGER PRIMARY KEY AUTOINCREMENT,
-      customerName TEXT NOT NULL,
-      orderType TEXT NOT NULL,
-      address TEXT,
-      paymentMethod TEXT NOT NULL,
-      changeValue TEXT,
-      total REAL NOT NULL,
-      status TEXT DEFAULT 'Recebido',
-      createdAt DATETIME DEFAULT CURRENT_TIMESTAMP
-      customerPhone TEXT -- Nova coluna para o telefone
+      codigo_pedido TEXT,
+      cliente TEXT,
+      telefone TEXT,
+      tipo TEXT,
+      endereco TEXT,
+      pagamento TEXT,
+      troco REAL,
+      itens TEXT,
+      total REAL,
+      status TEXT DEFAULT 'recebido',
+      data_pedido DATETIME DEFAULT CURRENT_TIMESTAMP
     )
-  `);
+  `;
 
-  db.run(`
-    CREATE TABLE IF NOT EXISTS itens_pedido (
-      id INTEGER PRIMARY KEY AUTOINCREMENT,
-      pedidoId INTEGER,
-      itemName TEXT NOT NULL,
-      itemPrice REAL NOT NULL,
-      quantity INTEGER NOT NULL,
-      FOREIGN KEY (pedidoId) REFERENCES pedidos (id)
-    )
-  `);
-});
+  db.run(sqlCreate, (err) => {
+    if (err) console.error("Erro ao criar tabela:", err);
+    else console.log("📦 Tabela 'pedidos' verificada.");
+  });
+}
 
 module.exports = db;
